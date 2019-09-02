@@ -5,7 +5,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import *
 import time
 import logging
-from typing import NamedTuple
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from datastorage import *

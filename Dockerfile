@@ -1,22 +1,28 @@
-FROM python:3.7.4-alpine as builder
+FROM ubuntu:latest as builder
 
-RUN apk update && \
-apk add alpine-sdk python-dev
+RUN apt-get -yqq update \
+&& apt-get -yqq install python3-pip python3-dev \
+&& cd /usr/local/bin \
+&& ln -s /usr/bin/python3 python \
+&& pip3 install --upgrade pip
 
 WORKDIR /app
 
 COPY requirements.txt /app/requirements.txt
-RUN pip wheel -r requirements.txt -w /wheels
+RUN pip3 wheel -r requirements.txt -w /wheels
 
-FROM python:3.7.4-alpine
-RUN apk update && \
-apk add alpine-sdk python-dev
+FROM ubuntu:latest
+RUN apt-get -yqq update \
+&& apt-get -yqq install python3-pip python3-dev \
+&& cd /usr/local/bin \
+&& ln -s /usr/bin/python3 python \
+&& pip3 install --upgrade pip
 
 WORKDIR /app
 
 COPY --from=builder /wheels /wheels
 COPY requirements.txt /app/requirements.txt
-RUN pip install -r requirements.txt --find-links /wheels
+RUN pip3 install -r requirements.txt --find-links /wheels
 
 COPY . /app
 ENV PYTHONPATH /app

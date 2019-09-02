@@ -2,7 +2,7 @@ from selenium import webdriver
 from browserstack.local import Local
 import os, json
 
-CONFIG_FILE = os.environ['CONFIG_FILE'] if 'CONFIG_FILE' in os.environ else r'..\config\single.json'
+CONFIG_FILE = os.environ['CONFIG_FILE'] if 'CONFIG_FILE' in os.environ else os.path.join('..', 'config', 'single.json')
 TASK_ID = int(os.environ['TASK_ID']) if 'TASK_ID' in os.environ else 0
 
 with open(CONFIG_FILE) as data_file:
