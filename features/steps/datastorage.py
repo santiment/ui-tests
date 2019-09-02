@@ -50,7 +50,7 @@ selectors = {
 "search_result_list": "div.SearchWithSuggestions_suggestions__3z1wA",
 "close_search_dialog": "svg.Dialog_close__wPN0y",
 "token_selector_element": "div.Header_selector__3x1uF",
-"token_selector_image": 'div.Header_selector__3x1uF img[alt="Bitcoin"]',
+"token_selector_image": 'div.Header_selector__3x1uF img',
 "metrics_menu": "div.Tooltip_tooltip__fE-Ct.ContextMenu_menu__35C1n",
 "metrics_menu_title": "div.Tooltip_tooltip__fE-Ct.ContextMenu_menu__35C1n div.Panel_header__x1vbc.ChartMetricSelector_header__31oOd",
 "modal_overlay": "div.Modal_wrapper__3lQw2.ContextMenu_wrapper__3VXIO",

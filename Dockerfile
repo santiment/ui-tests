@@ -1,22 +1,16 @@
-FROM ubuntu:latest as builder
+FROM python:3.7.4-slim as builder
 
 RUN apt-get -yqq update \
-&& apt-get -yqq install python3-pip python3-dev \
-&& cd /usr/local/bin \
-&& ln -s /usr/bin/python3 python \
-&& pip3 install --upgrade pip
+&& apt-get -yqq install gcc
 
 WORKDIR /app
 
 COPY requirements.txt /app/requirements.txt
 RUN pip3 wheel -r requirements.txt -w /wheels
 
-FROM ubuntu:latest
+FROM python:3.7.4-slim
 RUN apt-get -yqq update \
-&& apt-get -yqq install python3-pip python3-dev \
-&& cd /usr/local/bin \
-&& ln -s /usr/bin/python3 python \
-&& pip3 install --upgrade pip
+&& apt-get -yqq install gcc
 
 WORKDIR /app
 
