@@ -88,3 +88,35 @@ def step_impl(context):
 @When('I wait for "{sec}" seconds')
 def step_impl(context, sec):
     time.sleep(int(sec))
+
+@Then('I verify chart dates are correct for "{period}" period')
+def step_impl(context, period):
+    if period not in periods_exact + periods_approx + periods_uncertain:
+        raise ValueError("Unknown period: {0}".format(period))
+    date_pattern = '%d %b %y'
+    end_date = datetime.today()
+    start_date = end_date - delta[period]
+    start_date_string = start_date.strftime(date_pattern)
+    end_date_string = end_date.strftime(date_pattern)
+    start_date_graph = context.mainpage.get_chart_date('first')
+    end_date_graph = context.mainpage.get_chart_date('last')
+    if period in periods_exact:
+        assert end_date_string == end_date_graph
+        assert start_date_string == start_date_graph
+    elif period in periods_approx:
+        assert end_date_string[2:] == end_date_graph[2:]
+        assert start_date_string[2:] == start_date_graph[2:]
+    elif period in periods_uncertain:
+        assert end_date_string[2:] == end_date_graph[2:]
+
+@Then('I verify calendar dates are correct for "{period}" period')
+def step_impl(context, period):
+    if period not in periods_exact + periods_approx + periods_uncertain:
+        raise ValueError("Unknown period: {0}".format(period))
+    end_date = datetime.today() + relativedelta(days=1)
+    start_date = end_date - delta[period] - relativedelta(days=1)
+    start_date_cal, end_date_cal = context.mainpage.get_from_to_dates()
+    print(start_date, start_date_cal, end_date, end_date_cal, sep='\n')
+    assert end_date.date() == end_date_cal.date()
+    if period not in periods_uncertain:
+        assert start_date.date() == start_date_cal.date()

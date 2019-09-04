@@ -50,19 +50,19 @@ Feature: basic stuff
 #    Then I ensure main page is displayed
 
 
- Scenario Outline: Verify Link
-    Given I load Santiment stage page
-    When I search for "<token>" in graph search bar and select the result
-    When I select "1m" period
-    When I select "Price" metric
-    When I select "Development Activity" metric
-    When I select "Volume" metric
-    When I deselect "Development Activity" metric
-    When I deselect "Twitter" metric
-    Then I verify that share link contains correct data
-Examples:
-| token |
-| bitcoin |
+# Scenario Outline: Verify Link
+#    Given I load Santiment stage page
+#    When I search for "<token>" in graph search bar and select the result
+#    When I select "1m" period
+#    When I select "Price" metric
+#    When I select "Development Activity" metric
+#    When I select "Volume" metric
+#    When I deselect "Development Activity" metric
+#    When I deselect "Twitter" metric
+#    Then I verify that share link contains correct data
+#Examples:
+#| token |
+#| bitcoin |
 #| Litecoin |
 #| Cardano |
 #| Ripple |
@@ -72,3 +72,20 @@ Examples:
 #| Tezos |
 #| Binance Coin |
 #| TRON |
+
+ Scenario Outline: Verify Link
+    Given I load Santiment stage page
+    When I select "<period>" period
+    When I wait for "2" seconds
+    Then I verify chart dates are correct for "<period>" period
+    And I verify calendar dates are correct for "<period>" period
+
+Examples:
+  | period |
+  | 1d |
+  | 1w |
+  | 1m |
+  | 3m |
+  | 6m |
+  | 1y |
+  | all |
