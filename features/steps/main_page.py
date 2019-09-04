@@ -350,3 +350,9 @@ class Mainpage:
     def get_interval(self):
         selector = selectors["interval"]
         return self.get_chart_page_element().find_element_by_css_selector(selector).text
+
+    def get_chart_date(self, order):
+        selector = selectors["chart_date"]
+        if order not in ("first", "last"):
+            raise ValueError("Unsupported order: {0}".format(order))
+        return self.get_chart_page_element().find_element_by_css_selector(selector.format(order)).text

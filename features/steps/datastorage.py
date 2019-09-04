@@ -1,3 +1,5 @@
+from dateutil.relativedelta import relativedelta
+
 metrics = {
 "Price": ("Financial", "historyPrice"),
 "Volume": ("Financial", "volume"),
@@ -68,5 +70,20 @@ selectors = {
 "chart_settings_button": "div.ChartPage_settings__group__p-3hT button.Button_button__16STw.Button_flat__2o9Q6",
 "chart_settings_menu": "div.Tooltip_tooltip__fE-Ct.ContextMenu_menu__35C1n",
 "token_title": "h1.Header_project__name__2-7uj",
+"chart_date": "div.recharts-wrapper g.recharts-cartesian-axis-ticks g.recharts-layer.recharts-cartesian-axis-tick:{0}-child tspan",
 
 }
+
+delta = {
+"1d": relativedelta(days=1),
+"1w": relativedelta(weeks=1),
+"1m": relativedelta(months=1),
+"3m": relativedelta(months=3),
+"6m": relativedelta(months=6),
+"1y": relativedelta(years=1),
+"all": relativedelta(),
+}
+
+periods_exact = ('1d', '1w', '1m')
+periods_approx = ('3m', '6m', '1y')
+periods_uncertain = ('all',)
