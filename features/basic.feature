@@ -73,19 +73,36 @@ Feature: basic stuff
 #| Binance Coin |
 #| TRON |
 
- Scenario Outline: Verify Link
-    Given I load Santiment stage page
-    When I select "<period>" period
-    When I wait for "2" seconds
-    Then I verify chart dates are correct for "<period>" period
-    And I verify calendar dates are correct for "<period>" period
+# Scenario Outline: Verify dates
+#    Given I load Santiment stage page
+#    When I select "<period>" period
+#    When I wait for "2" seconds
+#    Then I verify chart dates are correct for "<period>" period
+#    And I verify calendar dates are correct for "<period>" period
+#
+#Examples:
+#  | period |
+#  | 1d |
+#  | 1w |
+#  | 1m |
+#  | 3m |
+#  | 6m |
+#  | 1y |
+#  | all |
 
+ Scenario Outline: Verify token info
+    Given I load Santiment stage page
+    When I search for "<token>" in graph search bar and select the result
+    Then I verify token info is displayed correctly
 Examples:
-  | period |
-  | 1d |
-  | 1w |
-  | 1m |
-  | 3m |
-  | 6m |
-  | 1y |
-  | all |
+| token |
+| bitcoin |
+| Litecoin |
+| Cardano |
+| Ripple |
+| ChainLink |
+| santiment |
+| Stellar |
+| Tezos |
+| Binance Coin |
+| TRON |

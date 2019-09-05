@@ -23,11 +23,12 @@ class ClickError(Exception):
 
 def safe_click(element):
     attempts = 0
-    while attempts < 5:
+    while attempts < 10:
         try:
             element.click()
             return
         except StaleElementReferenceException:
+            time.sleep(0.5)
             attempts += 1
     raise ClickError("Exceeded max click attempts limit on element {0}".format(element))
 
@@ -45,7 +46,7 @@ class Mainpage:
 
     def navigate_to_main_page(self):
         attempts = 0
-        selector = selectors["token_selector_image"]
+        selector = selectors["token_image"]
         while attempts < 5:
             try:
                 self.driver.get(self.default_url)
@@ -96,6 +97,7 @@ class Mainpage:
         for element in search_result_elements:
             if text.lower() in element.text.lower():
                     return element
+        raise ValueError("No search result found for '{0}'".format(text))
 
     def search(self, text):
         logging.info("Searching for '{0}'".format(text))
@@ -106,8 +108,10 @@ class Mainpage:
     def search_and_select(self, text):
         self.search(text)
         safe_click(self.get_search_result_element(text))
-        xpath = xpaths["search_result"].format(text)
-        self.wait.until(EC.invisibility_of_element_located((By.XPATH, xpath)))
+        selector_dialog = selectors["search_dialog"]
+        selector_image = selectors['token_image']
+        self.wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR, selector_dialog)))
+        WebDriverWait(self.driver, 7).until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector_image)))
 
     def get_period_selector_element(self, period):
         logging.info("Getting period selector for {0}".format(period))
@@ -336,9 +340,12 @@ class Mainpage:
         xpath = xpaths["chart_settings_menu_item"].format(chart_settings_options[option])
         return self.get_chart_settings_menu_element().find_element_by_xpath(xpath)
 
-    def get_token_title(self):
+    def get_token_title_element(self):
         selector = selectors["token_title"]
-        return self.get_token_selector_element().find_element_by_css_selector(selector).text
+        return self.driver.find_element_by_css_selector(selector)
+
+    def get_token_title(self):
+        return self.get_token_title_element().text
 
     def get_from_to_dates(self):
         selector = selectors["calendar_dates"]
@@ -356,3 +363,31 @@ class Mainpage:
         if order not in ("first", "last"):
             raise ValueError("Unsupported order: {0}".format(order))
         return self.get_chart_page_element().find_element_by_css_selector(selector.format(order)).text
+
+    def get_token_image_element(self):
+        selector = selectors["token_image"]
+        return self.get_chart_header_element().find_element_by_css_selector(selector)
+
+    def get_token_description_element(self):
+        selector = selectors["token_description"]
+        return self.get_chart_header_element().find_element_by_css_selector(selector)
+
+    def get_token_price_element(self):
+        selector = selectors["token_price"]
+        return self.get_chart_header_element().find_element_by_css_selector(selector)
+
+    def get_token_volume_element(self):
+        selector = selectors["token_volume"]
+        return self.get_chart_header_element().find_element_by_css_selector(selector)
+
+    def get_token_currency_element(self):
+        selector = selectors["token_volume_currency"]
+        return self.get_chart_header_element().find_element_by_css_selector(selector)
+
+    def get_add_signal_button(self):
+        selector = selectors["add_signal_button"]
+        return self.get_chart_header_element().find_element_by_css_selector(selector)
+
+    def get_watch_button(self):
+        selector = selectors["watch_button"]
+        return self.get_chart_header_element().find_element_by_css_selector(selector)
