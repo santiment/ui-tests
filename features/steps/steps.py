@@ -120,3 +120,41 @@ def step_impl(context, period):
     assert end_date.date() == end_date_cal.date()
     if period not in periods_uncertain:
         assert start_date.date() == start_date_cal.date()
+
+@Then('I verify token info is displayed correctly')
+def step_impl(context):
+    token_title_element = context.mainpage.get_token_title_element()
+    token_image_element = context.mainpage.get_token_image_element()
+    token_price_element = context.mainpage.get_token_price_element()
+    token_volume_element = context.mainpage.get_token_volume_element()
+    token_currency_element = context.mainpage.get_token_currency_element()
+    add_signal_button = context.mainpage.get_add_signal_button()
+    watch_button = context.mainpage.get_watch_button()
+
+    assert token_title_element.is_displayed()
+    assert token_price_element.is_displayed()
+    assert token_volume_element.is_displayed()
+    assert token_currency_element.is_displayed()
+    assert add_signal_button.is_displayed()
+    assert watch_button.is_displayed()
+
+
+    title = token_title_element.text
+    nickname = title.split(' ')[-1]
+    for x in '() ':
+        nickname = nickname.replace(x, '')
+    first_name = title.split(' ')[0].lower()
+
+    assert nickname == token_currency_element.text
+    assert first_name in token_image_element.get_attribute("src")
+    assert watch_button.text == "Watch {0}".format(nickname)
+    assert add_signal_button.text == "Add signal"
+
+    token_price_digits = token_price_element.text
+    token_volume_digits = token_volume_element.text
+    for x in '$.,0 ':
+        token_price_digits = token_price_digits.replace(x, '')
+        token_volume_digits = token_volume_digits.replace(x, '')
+
+    assert token_price_digits != ''
+    assert token_volume_digits != ''
