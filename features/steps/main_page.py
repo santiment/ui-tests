@@ -1,4 +1,4 @@
-from selenium import webdriver
+from seleniumwire import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -8,6 +8,9 @@ import logging
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from datastorage import *
+from selenium.webdriver.common.action_chains import ActionChains
+import urllib.request
+from constants import *
 
 class MaxAttemptsLimitException(Exception):
     pass
@@ -34,7 +37,7 @@ def safe_click(element):
 
 class Mainpage:
 
-    def __init__(self, driver):
+    def __init__(self, driver, is_logged_in):
         date_to = datetime.strftime(datetime.today(), '%Y-%m-%dT21:00:00.000Z')
         date_from = datetime.strftime(datetime.today() - relativedelta(months=6), '%Y-%m-%dT21:00:00.000Z')
         self.default_url = 'https://app-stage.santiment.net/?from={0}&interval=1d&metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29&to={1}'.format(date_from, date_to)
@@ -43,6 +46,13 @@ class Mainpage:
         self.state = {
         "active_metrics": ['Price'],
         }
+        if is_logged_in:
+            url = bot_url + BOT_LOGIN_SECRET_ENDPOINT
+            request = urllib.request.Request(url, headers={'User-Agent': 'Magic Browser'})
+            token = urllib.request.urlopen(request).read().decode('utf-8')
+            self.driver.header_overrides = {
+            'Authorization': 'Bearer ' + token,
+            }
 
     def navigate_to_main_page(self):
         attempts = 0
@@ -391,3 +401,13 @@ class Mainpage:
     def get_watch_button(self):
         selector = selectors["watch_button"]
         return self.get_chart_header_element().find_element_by_css_selector(selector)
+
+    def get_account_menu_button(self):
+        selector = selectors["account_menu_button"]
+        return self.driver.find_element_by_css_selector(selector)
+
+    def open_account_menu(self):
+        button = self.get_account_menu_button()
+        safe_click(button)
+        selector = selectors["account_menu"]
+        return self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector)))

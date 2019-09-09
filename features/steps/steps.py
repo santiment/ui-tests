@@ -6,9 +6,10 @@ from dateutil.relativedelta import relativedelta
 from datastorage import *
 import time
 
-@Given('I load Santiment stage page')
-def step_impl(context):
-    context.mainpage = Mainpage(context.browser)
+@Given('I load Santiment stage page and "{is_logged_in_str}" log in')
+def step_impl(context, is_logged_in_str):
+    is_logged_in = is_logged_in_str == 'do'
+    context.mainpage = Mainpage(context.browser, is_logged_in)
     context.mainpage.navigate_to_main_page()
     context.mainpage.close_cookie_popup()
     context.mainpage.close_explore_popup()
@@ -158,3 +159,7 @@ def step_impl(context):
 
     assert token_price_digits != ''
     assert token_volume_digits != ''
+
+@When("I open account menu")
+def step_impl(context):
+    account_menu = context.mainpage.open_account_menu()

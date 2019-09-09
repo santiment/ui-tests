@@ -77,6 +77,8 @@ selectors = {
     "chart_settings_button": "div.ChartPage_settings__group__p-3hT button.Button_button__16STw.Button_flat__2o9Q6",
     "chart_settings_menu": "div.Tooltip_tooltip__fE-Ct.ContextMenu_menu__35C1n",
     "chart_date": "div.recharts-wrapper g.recharts-cartesian-axis-ticks g.recharts-layer.recharts-cartesian-axis-tick:{0}-child tspan",
+    "account_menu_button": "header.Navbar_header__ay1vx div.Navbar_right__1MerY div.dd__trigger:nth-child(3) button.Navbar_btn__3ZCA_",
+    "account_menu": "#dd-modal div.NavbarProfileDropdown_wrapper__2mpA1",
 }
 
 delta = {
@@ -92,3 +94,5 @@ delta = {
 periods_exact = ('1d', '1w', '1m')
 periods_approx = ('3m', '6m', '1y')
 periods_uncertain = ('all',)
+
+bot_url = "https://api-stage.santiment.net/bot/login/"

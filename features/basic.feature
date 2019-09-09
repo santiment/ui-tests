@@ -90,19 +90,23 @@ Feature: basic stuff
 #  | 1y |
 #  | all |
 
- Scenario Outline: Verify token info
-    Given I load Santiment stage page
-    When I search for "<token>" in graph search bar and select the result
-    Then I verify token info is displayed correctly
-Examples:
-| token |
-| bitcoin |
-| Litecoin |
-| Cardano |
-| Ripple |
-| ChainLink |
-| santiment |
-| Stellar |
-| Tezos |
-| Binance Coin |
-| TRON |
+# Scenario Outline: Verify token info
+#    Given I load Santiment stage page
+#    When I search for "<token>" in graph search bar and select the result
+#    Then I verify token info is displayed correctly
+#Examples:
+#| token |
+#| bitcoin |
+#| Litecoin |
+#| Cardano |
+#| Ripple |
+#| ChainLink |
+#| santiment |
+#| Stellar |
+#| Tezos |
+#| Binance Coin |
+#| TRON |
+
+Scenario: Account menu
+   Given I load Santiment stage page and "do" log in
+   When I open account menu
