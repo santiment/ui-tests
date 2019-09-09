@@ -1,4 +1,4 @@
-from selenium import webdriver
+from seleniumwire import webdriver
 from browserstack.local import Local
 import os, json
 

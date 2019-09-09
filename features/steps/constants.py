@@ -1,0 +1,4 @@
+import os
+
+
+BOT_LOGIN_SECRET_ENDPOINT = os.getenv('BOT_LOGIN_SECRET_ENDPOINT')
