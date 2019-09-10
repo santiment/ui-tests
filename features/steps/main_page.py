@@ -132,7 +132,9 @@ class Mainpage:
         logging.info("Selecting period {0}".format(period))
         xpath = xpaths["period_selector_active"].format(period)
         safe_click(self.get_period_selector_element(period))
-        self.wait.until(EC.visibility_of_element_located((By.XPATH, xpath)))
+        self.wait.until(
+        lambda wd: wd.find_element_by_xpath(xpath).text == period
+        )
 
     def get_metrics_menu_element(self):
         selector = selectors["metrics_menu"]
@@ -184,6 +186,10 @@ class Mainpage:
         logging.info("Getting active metric element {0}".format(metric))
         xpath = xpaths["active_metric"].format(metric)
         return self.get_active_metrics_panel_element().find_element_by_xpath(xpath)
+
+    def get_all_active_metric_elements(self):
+        xpath = xpaths["any_active_metric"]
+        return self.get_active_metrics_panel_element().find_elements_by_xpath(xpath)
 
     def get_close_active_metric_element(self, active_metric):
         selector = selectors["close_active_metric"]
@@ -411,3 +417,7 @@ class Mainpage:
         safe_click(button)
         selector = selectors["account_menu"]
         return self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector)))
+
+    def get_active_period_element(self):
+        xpath = xpaths["period_selector_active"]
+        return self.driver.find_element_by_xpath(xpath)
