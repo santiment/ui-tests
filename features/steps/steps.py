@@ -42,6 +42,12 @@ def step_impl(context, category):
 def step_impl(context, metric):
     context.mainpage.select_metric(metric)
 
+@When('I select "{metrics}" metrics')
+def step_impl(context, metrics):
+    metrics_list = [x.strip() for x in metrics.split(',')]
+    for metric in metrics_list:
+        context.mainpage.select_metric(metric)
+
 @When('I deselect "{metric}" metric')
 def step_impl(context, metric):
     context.mainpage.deselect_metric(metric)
@@ -90,7 +96,7 @@ def step_impl(context):
 def step_impl(context, sec):
     time.sleep(int(sec))
 
-@Then('I verify chart dates are correct for "{period}" period')
+@Then('I verify that chart dates are correct for "{period}" period')
 def step_impl(context, period):
     if period not in periods_exact + periods_approx + periods_uncertain:
         raise ValueError("Unknown period: {0}".format(period))
@@ -110,7 +116,7 @@ def step_impl(context, period):
     elif period in periods_uncertain:
         assert end_date_string[2:] == end_date_graph[2:]
 
-@Then('I verify calendar dates are correct for "{period}" period')
+@Then('I verify that calendar dates are correct for "{period}" period')
 def step_impl(context, period):
     if period not in periods_exact + periods_approx + periods_uncertain:
         raise ValueError("Unknown period: {0}".format(period))
@@ -122,7 +128,7 @@ def step_impl(context, period):
     if period not in periods_uncertain:
         assert start_date.date() == start_date_cal.date()
 
-@Then('I verify token info is displayed correctly')
+@Then('I verify that token info is displayed correctly')
 def step_impl(context):
     token_title_element = context.mainpage.get_token_title_element()
     token_image_element = context.mainpage.get_token_image_element()
@@ -163,3 +169,20 @@ def step_impl(context):
 @When("I open account menu")
 def step_impl(context):
     account_menu = context.mainpage.open_account_menu()
+
+@Then('I verify that "{period}" period is selected')
+def step_impl(context, period):
+    active_period_element = context.mainpage.get_active_period_element()
+    assert active_period_element.text == period
+
+@Then('I verify that "{metric}" metric is active')
+def step_impl(context, metric):
+    active_metric_elements = context.mainpage.get_all_active_metric_elements()
+    assert metric in [element.text for element in active_metric_elements]
+
+@Then('I verify that "{metrics}" metrics are active')
+def step_impl(context, metrics):
+    metric_list = [x.strip() for x in metrics.split(',')]
+    active_metric_elements = context.mainpage.get_all_active_metric_elements()
+    active_metric_names = [element.text for element in active_metric_elements]
+    assert sorted(metric_list) == sorted(active_metric_names)
