@@ -43,9 +43,6 @@ class Mainpage:
         self.default_url = 'https://app-stage.santiment.net/?from={0}&interval=1d&metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29&to={1}'.format(date_from, date_to)
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 3)
-        self.state = {
-        "active_metrics": ['Price'],
-        }
         if is_logged_in:
             url = bot_url + BOT_LOGIN_SECRET_ENDPOINT
             request = urllib.request.Request(url, headers={'User-Agent': 'Magic Browser'})
@@ -191,35 +188,42 @@ class Mainpage:
         xpath = xpaths["any_active_metric"]
         return self.get_active_metrics_panel_element().find_elements_by_xpath(xpath)
 
+    def get_all_active_metrics(self):
+        return [x.text for x in self.get_all_active_metric_elements()]
+
     def get_close_active_metric_element(self, active_metric):
         selector = selectors["close_active_metric"]
         return active_metric.find_element_by_css_selector(selector)
 
     def select_metric(self, metric):
-        if not metric in self.state['active_metrics']:
+        try:
+            self.get_active_metric_element(metric)
+        except NoSuchElementException:
             self.open_metrics_menu()
             xpath = xpaths["active_metric"].format(metric)
             self.select_metrics_category(metrics[metric][0])
             metric_element = self.get_metric_element(metric)
             safe_click(metric_element)
             self.wait.until(EC.visibility_of_element_located((By.XPATH, xpath)))
-            self.state['active_metrics'].append(metric)
             self.close_metrics_menu()
 
 
     def deselect_metric(self, metric):
         logging.info("Trying to deselect {0} metric".format(metric))
-        if metric in self.state['active_metrics']:
+        try:
             active_metric = self.get_active_metric_element(metric)
             safe_click(self.get_close_active_metric_element(active_metric))
             self.wait.until(EC.invisibility_of_element(active_metric))
-            self.state['active_metrics'].remove(metric)
+        except NoSuchElementException:
+            pass
 
     def clear_all_active_metrics(self):
-        logging.info("{0} active metrics to remove".format(len(self.state['active_metrics'])))
-        for metric in self.state['active_metrics']:
+        active_metrics = self.get_all_active_metrics()
+        logging.info("{0} active metrics to remove".format(len(active_metrics)))
+        for metric in active_metrics:
             self.deselect_metric(metric)
-        logging.info("{0} metrics left after removal".format(len(self.state['active_metrics'])))
+        active_metrics = self.get_all_active_metrics()
+        logging.info("{0} metrics left after removal".format(len(active_metrics)))
 
     def get_share_dialog(self):
         selector = selectors["share_dialog"]
