@@ -46,9 +46,7 @@ def step_impl(context, metric):
 def step_impl(context, metrics):
     metrics_list = [x.strip() for x in metrics.split(',')]
     for metric in metrics_list:
-        print('Selecting metric', metric)
         context.mainpage.select_metric(metric)
-        print('State after selection', context.mainpage.get_all_active_metrics())
 
 @When('I deselect "{metric}" metric')
 def step_impl(context, metric):
@@ -64,9 +62,7 @@ def step_impl(context):
 
 @When('I clear all active metrics')
 def step_impl(context):
-    print('State before clearing all', context.mainpage.get_all_active_metrics())
     context.mainpage.clear_all_active_metrics()
-    print('State after clearing all', context.mainpage.get_all_active_metrics())
 
 @Then('I verify that share link contains correct data')
 def step_impl(context):
@@ -111,7 +107,6 @@ def step_impl(context, period):
     start_date = end_date - delta[period][0]
     start_date_graph = datetime.strptime(context.mainpage.get_chart_date('first'), date_pattern)
     end_date_graph = datetime.strptime(context.mainpage.get_chart_date('last'), date_pattern)
-    print(start_date, start_date_graph, end_date, end_date_graph, sep='\n')
     assert abs(end_date - end_date_graph) < timedelta(days=1)
     if period != 'all':
         assert abs(start_date - start_date_graph) < delta[period][1]
@@ -122,9 +117,8 @@ def step_impl(context, period):
     if period not in delta:
         raise ValueError("Unknown period: {0}".format(period))
     end_date = datetime.today() + relativedelta(days=1)
-    start_date = end_date - delta[period][0] - relativedelta(days=1)
+    start_date = datetime.today() - delta[period][0]
     start_date_cal, end_date_cal = context.mainpage.get_from_to_dates()
-    print(start_date, start_date_cal, end_date, end_date_cal, sep='\n')
     assert end_date.date() == end_date_cal.date()
     if period != 'all':
         assert start_date.date() == start_date_cal.date()

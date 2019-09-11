@@ -81,6 +81,7 @@ selectors = {
     "chart_date": "div.recharts-wrapper g.recharts-cartesian-axis-ticks g.recharts-layer.recharts-cartesian-axis-tick:{0}-child tspan",
     "account_menu_button": "header.Navbar_header__ay1vx div.Navbar_right__1MerY div.dd__trigger:nth-child(3) button.Navbar_btn__3ZCA_",
     "account_menu": "#dd-modal div.NavbarProfileDropdown_wrapper__2mpA1",
+    "chart_loader": "#root div.ChartPage_wrapper__805jp div.Chart_loader__1bLXA",
 }
 
 delta = {

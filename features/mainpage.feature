@@ -1,5 +1,5 @@
 Feature: UI tests for app main page
-@wip
+
 Scenario: 1 - page defaults are displayed correctly
 Given I load Santiment stage page and "do not" log in
 Then I verify that "6m" period is selected
@@ -40,13 +40,13 @@ Then I verify that token info is displayed correctly
  | Tezos |
  | Binance Coin |
  | TRON |
-@wip
+
 Scenario: 4 - metric selection and clearing works properly
 Given I load Santiment stage page and "do not" log in
-When I select "Price, Volume, Social Volume, Social Dominance, Twitter" metrics
+When I select "Price, Volume, Social Volume, Social Dominance, Development Activity" metrics
 When I clear all active metrics
-When I select "Price, Volume, Social Volume, Social Dominance, Twitter" metrics
-Then I verify that "Price, Volume, Social Volume, Social Dominance, Twitter" metrics are active
+When I select "Price, Volume, Social Volume, Social Dominance, Development Activity" metrics
+Then I verify that "Price, Volume, Social Volume, Social Dominance, Development Activity" metrics are active
 
 Scenario Outline: 5 - Share link contains correct data
 Given I load Santiment stage page and "do not" log in

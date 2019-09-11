@@ -38,9 +38,7 @@ def safe_click(element):
 class Mainpage:
 
     def __init__(self, driver, is_logged_in):
-        date_to = datetime.strftime(datetime.today(), '%Y-%m-%dT21:00:00.000Z')
-        date_from = datetime.strftime(datetime.today() - relativedelta(months=6), '%Y-%m-%dT21:00:00.000Z')
-        self.default_url = 'https://app-stage.santiment.net/?from={0}&interval=1d&metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29&to={1}'.format(date_from, date_to)
+        self.default_url = 'https://app-stage.santiment.net/?metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29'
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 3)
         if is_logged_in:
@@ -127,11 +125,13 @@ class Mainpage:
 
     def select_period(self, period):
         logging.info("Selecting period {0}".format(period))
-        xpath = xpaths["period_selector_active"].format(period)
+        xpath = xpaths["period_selector_active"]
         safe_click(self.get_period_selector_element(period))
         self.wait.until(
-        lambda wd: wd.find_element_by_xpath(xpath).text == period
+            lambda wd: wd.find_element_by_xpath(xpath).text == period
         )
+        selector = selectors["chart_loader"]
+        self.wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR, selector)))
 
     def get_metrics_menu_element(self):
         selector = selectors["metrics_menu"]
@@ -293,10 +293,6 @@ class Mainpage:
             self.wait.until(EC.invisibility_of_element(dialog))
         except NoSuchElementException:
             pass
-
-    def get_metrics_menu_element(self):
-        selector = selectors["metrics_menu"]
-        return self.driver.find_element_by_css_selector(selector)
 
     def get_metrics_menu_button(self):
         selector = selectors["metrics_menu_button"]
