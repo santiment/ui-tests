@@ -1,6 +1,6 @@
 from seleniumwire import webdriver
 from browserstack.local import Local
-import os, jsoт
+import os, json
 from constants import WHERE_TO_RUN, CONFIG_FILE, TASK_ID, BROWSERSTACK_SERVER, BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, BROWSERSTACK_APP_ID
 
 CONFIG_FILE_PATH = os.path.join('..', 'config', '{0}.json'.format(CONFIG_FILE))

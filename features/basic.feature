@@ -5,9 +5,10 @@ Feature: basic stuff
     Given I load Santiment stage page and "do not" log in
     Then page title is "SANbase"
 
-    Scenario: View Main Page Text
-      Given I load Santiment stage page and "do not" log in
-      Then I ensure main page is displayed
+@lightweight
+Scenario: View Main Page Text
+Given I load Santiment stage page and "do" log in
+Then I ensure main page is displayed
 
     Scenario: View Main Page Text 2
       Given I load Santiment stage page and "do not" log in
