@@ -1,7 +1,7 @@
 from behave import *
 from main_page import Mainpage
 import urllib.parse as urlparse
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from datastorage import *
 import time
@@ -73,8 +73,10 @@ def step_impl(context):
     netloc = parsed.netloc
     params = urlparse.parse_qs(parsed.query)
     metrics_link = params['metrics'][0].split(',')
-    metrics_page = [metrics[metric][1] for metric in context.mainpage.state['active_metrics']]
+    metrics_page = [metrics[metric][1] for metric in context.mainpage.get_all_active_metrics()]
     title_page = context.mainpage.get_token_title()
+    if title_page in title_conversion:
+        title_page = title_conversion[title_page]
     title_link = params['title'][0]
     date_from_page, date_to_page = context.mainpage.get_from_to_dates()
     date_from_page_corrected = date_from_page - relativedelta(days=1)
@@ -98,34 +100,27 @@ def step_impl(context, sec):
 
 @Then('I verify that chart dates are correct for "{period}" period')
 def step_impl(context, period):
-    if period not in periods_exact + periods_approx + periods_uncertain:
+    if period not in delta:
         raise ValueError("Unknown period: {0}".format(period))
     date_pattern = '%d %b %y'
-    end_date = datetime.today()
-    start_date = end_date - delta[period]
-    start_date_string = start_date.strftime(date_pattern)
-    end_date_string = end_date.strftime(date_pattern)
-    start_date_graph = context.mainpage.get_chart_date('first')
-    end_date_graph = context.mainpage.get_chart_date('last')
-    if period in periods_exact:
-        assert end_date_string == end_date_graph
-        assert start_date_string == start_date_graph
-    elif period in periods_approx:
-        assert end_date_string[2:] == end_date_graph[2:]
-        assert start_date_string[2:] == start_date_graph[2:]
-    elif period in periods_uncertain:
-        assert end_date_string[2:] == end_date_graph[2:]
+    end_date = datetime.combine(datetime.today().date(), datetime.min.time())
+    start_date = end_date - delta[period][0]
+    start_date_graph = datetime.strptime(context.mainpage.get_chart_date('first'), date_pattern)
+    end_date_graph = datetime.strptime(context.mainpage.get_chart_date('last'), date_pattern)
+    assert abs(end_date - end_date_graph) < timedelta(days=1)
+    if period != 'all':
+        assert abs(start_date - start_date_graph) < delta[period][1]
+
 
 @Then('I verify that calendar dates are correct for "{period}" period')
 def step_impl(context, period):
-    if period not in periods_exact + periods_approx + periods_uncertain:
+    if period not in delta:
         raise ValueError("Unknown period: {0}".format(period))
     end_date = datetime.today() + relativedelta(days=1)
-    start_date = end_date - delta[period] - relativedelta(days=1)
+    start_date = datetime.today() - delta[period][0]
     start_date_cal, end_date_cal = context.mainpage.get_from_to_dates()
-    print(start_date, start_date_cal, end_date, end_date_cal, sep='\n')
     assert end_date.date() == end_date_cal.date()
-    if period not in periods_uncertain:
+    if period != 'all':
         assert start_date.date() == start_date_cal.date()
 
 @Then('I verify that token info is displayed correctly')

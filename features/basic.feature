@@ -9,7 +9,7 @@ Feature: basic stuff
       Given I load Santiment stage page and "do not" log in
       Then I ensure main page is displayed
 
-    Scenario: View Main Page Text
+    Scenario: View Main Page Text 2
       Given I load Santiment stage page and "do not" log in
       Then I ensure main page is displayed
       When I search for "Ethereum" in graph search bar
@@ -56,10 +56,9 @@ Feature: basic stuff
     When I search for "<token>" in graph search bar and select the result
     When I select "1m" period
     When I select "Price" metric
-    When I select "Development Activity" metric
+    When I select "Social Volume" metric
     When I select "Volume" metric
     When I deselect "Development Activity" metric
-    When I deselect "Twitter" metric
     Then I verify that share link contains correct data
 Examples:
 | token |
@@ -73,6 +72,7 @@ Examples:
 | Tezos |
 | Binance Coin |
 | TRON |
+
 
  Scenario Outline: Verify dates
     Given I load Santiment stage page and "do not" log in
@@ -112,10 +112,13 @@ Scenario: Account menu
    Given I load Santiment stage page and "do" log in
    When I open account menu
 
-@wip
+
 Scenario: Select multiple metrics
 Given I load Santiment stage page and "do not" log in
 When I select "Price, Volume, Development Activity, Social Volume, Social Dominance" metrics
+When I wait for "3" seconds
 When I clear all active metrics
+When I wait for "3" seconds
 When I select "Price, Volume, Development Activity, Social Volume, Social Dominance" metrics
+When I wait for "3" seconds
 Then I verify that "Price, Volume, Development Activity, Social Volume, Social Dominance" metrics are active

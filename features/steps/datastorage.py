@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+from datetime import timedelta
 
 metrics = {
     "Price": ("Financial", "historyPrice"),
@@ -25,7 +26,7 @@ metrics = {
 }
 
 chart_settings_options = {
-    "share": "Share",
+    "share": "Share chart",
     "download": "Download as PNG",
 }
 
@@ -80,20 +81,21 @@ selectors = {
     "chart_date": "div.recharts-wrapper g.recharts-cartesian-axis-ticks g.recharts-layer.recharts-cartesian-axis-tick:{0}-child tspan",
     "account_menu_button": "header.Navbar_header__ay1vx div.Navbar_right__1MerY div.dd__trigger:nth-child(3) button.Navbar_btn__3ZCA_",
     "account_menu": "#dd-modal div.NavbarProfileDropdown_wrapper__2mpA1",
+    "chart_loader": "#root div.ChartPage_wrapper__805jp div.Chart_loader__1bLXA",
 }
 
 delta = {
-    "1d": relativedelta(days=1),
-    "1w": relativedelta(weeks=1),
-    "1m": relativedelta(months=1),
-    "3m": relativedelta(months=3),
-    "6m": relativedelta(months=6),
-    "1y": relativedelta(years=1),
-    "all": relativedelta(),
+    "1d": (relativedelta(days=1), timedelta(days=1)),
+    "1w": (relativedelta(weeks=1), timedelta(days=1)),
+    "1m": (relativedelta(months=1), timedelta(days=2)),
+    "3m": (relativedelta(months=3), timedelta(days=10)),
+    "6m": (relativedelta(months=6), timedelta(days=20)),
+    "1y": (relativedelta(years=1), timedelta(days=30)),
+    "all": (relativedelta(), timedelta()),
 }
 
-periods_exact = ('1d', '1w', '1m')
-periods_approx = ('3m', '6m', '1y')
-periods_uncertain = ('all',)
-
 bot_url = "https://api-stage.santiment.net/bot/login/"
+
+title_conversion = {
+    "Santiment Network Token (SAN)": "Santiment (SAN)",
+}
