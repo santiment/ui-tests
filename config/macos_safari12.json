@@ -1,0 +1,19 @@
+{
+  "server": "hub.browserstack.com",
+  "user": "maksimtkachuk1",
+  "key": "mxBbbTCghKR5AhRsxUTB",
+
+  "capabilities": {
+    "browserstack.debug": true,
+    "browserstack.local": false,
+    "name": "UI Tests - macOS Safari",
+  },
+
+  "environments": [{
+  "os": "OS X",
+  "os_version": "Mojave",
+  "browser": "Safari",
+  "browser_version": "12.1",
+  "resolution": "1920x1080"
+}]
+}

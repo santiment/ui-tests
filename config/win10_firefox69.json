@@ -1,0 +1,19 @@
+{
+  "server": "hub.browserstack.com",
+  "user": "maksimtkachuk1",
+  "key": "mxBbbTCghKR5AhRsxUTB",
+
+  "capabilities": {
+    "browserstack.debug": true,
+    "browserstack.local": false,
+    "name": "UI Tests - Winfows 10 Firefox",
+  },
+
+  "environments": [{
+  "os": "Windows",
+  "os_version": "10",
+  "browser": "Firefox",
+  "browser_version": "69.0",
+  "resolution": "1920x1080"
+}]
+}
