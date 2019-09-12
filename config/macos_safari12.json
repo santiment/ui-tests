@@ -1,8 +1,4 @@
 {
-  "server": "hub.browserstack.com",
-  "user": "maksimtkachuk1",
-  "key": "mxBbbTCghKR5AhRsxUTB",
-
   "capabilities": {
     "browserstack.debug": true,
     "browserstack.local": false,

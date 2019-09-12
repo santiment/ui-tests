@@ -3,7 +3,7 @@ from main_page import Mainpage
 import urllib.parse as urlparse
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from datastorage import *
+from datastorage import metrics, selectors, xpaths, chart_settings_options, delta, bot_url, title_conversion
 import time
 
 @Given('I load Santiment stage page and "{is_logged_in_str}" log in')
