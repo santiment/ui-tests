@@ -1,17 +1,14 @@
 from seleniumwire import webdriver
 from browserstack.local import Local
-import os, json
+import os, jsoт
+from constants import WHERE_TO_RUN, CONFIG_FILE, TASK_ID, BROWSERSTACK_SERVER, BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, BROWSERSTACK_APP_ID
 
-CONFIG_FILE = os.environ['CONFIG_FILE'] if 'CONFIG_FILE' in os.environ else os.path.join('..', 'config', 'single.json')
-TASK_ID = int(os.environ['TASK_ID']) if 'TASK_ID' in os.environ else 0
+CONFIG_FILE_PATH = os.path.join('..', 'config', '{0}.json'.format(CONFIG_FILE))
 
-with open(CONFIG_FILE) as data_file:
+with open(CONFIG_FILE_PATH) as data_file:
     CONFIG = json.load(data_file)
 
 bs_local = None
-
-BROWSERSTACK_USERNAME = os.environ['BROWSERSTACK_USERNAME'] if 'BROWSERSTACK_USERNAME' in os.environ else CONFIG['user']
-BROWSERSTACK_ACCESS_KEY = os.environ['BROWSERSTACK_ACCESS_KEY'] if 'BROWSERSTACK_ACCESS_KEY' in os.environ else CONFIG['key']
 
 def start_local():
     """Code to start browserstack local before start of test."""
@@ -28,22 +25,30 @@ def stop_local():
 
 
 def before_feature(context, feature):
-    desired_capabilities = CONFIG['environments'][TASK_ID]
+    if WHERE_TO_RUN == 'local':
+        chromedriver_path = os.path.realpath(os.path.join(os.getcwd(), '..', 'bin', 'chromedriver'))
+        if chromedriver_path not in os.environ["PATH"]:
+            os.environ["PATH"] += os.pathsep + chromedriver_path
+        options = webdriver.ChromeOptions()
+        options.add_argument("--start-maximized")
+        context.browser = webdriver.Chrome(chrome_options=options)
+    else:
+        desired_capabilities = CONFIG['environments'][TASK_ID]
 
-    for key in CONFIG["capabilities"]:
-        if key not in desired_capabilities:
-            desired_capabilities[key] = CONFIG["capabilities"][key]
+        for key in CONFIG["capabilities"]:
+            if key not in desired_capabilities:
+                desired_capabilities[key] = CONFIG["capabilities"][key]
 
-    if 'BROWSERSTACK_APP_ID' in os.environ:
-        desired_capabilities['app'] = os.environ['BROWSERSTACK_APP_ID']
+        if BROWSERSTACK_APP_ID:
+            desired_capabilities['app'] = BROWSERSTACK_APP_ID
 
-    if "browserstack.local" in desired_capabilities and desired_capabilities["browserstack.local"]:
-        start_local()
+        if "browserstack.local" in desired_capabilities and desired_capabilities["browserstack.local"]:
+            start_local()
 
-    context.browser = webdriver.Remote(
-        desired_capabilities=desired_capabilities,
-        command_executor="http://%s:%s@%s/wd/hub" % (BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, CONFIG['server'])
-    )
+        context.browser = webdriver.Remote(
+            desired_capabilities=desired_capabilities,
+            command_executor="http://%s:%s@%s/wd/hub" % (BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, BROWSERSTACK_SERVER)
+        )
 
 def after_feature(context, feature):
     context.browser.quit()

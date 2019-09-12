@@ -2,15 +2,15 @@ from seleniumwire import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import *
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 import time
 import logging
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from datastorage import *
+from datastorage import metrics, selectors, xpaths, chart_settings_options, delta, bot_url, title_conversion
 from selenium.webdriver.common.action_chains import ActionChains
 import urllib.request
-from constants import *
+from constants import BOT_LOGIN_SECRET_ENDPOINT
 
 class MaxAttemptsLimitException(Exception):
     pass
