@@ -20,7 +20,7 @@ def step_impl(context, title):
 
 @Then('I ensure main page is displayed')
 def step_impl(context):
-    assert context.mainpage.get_page_element().is_displayed() == True
+    assert context.mainpage.get_chart_page_element().is_displayed() == True
 
 @When('I search for "{text}" in graph search bar')
 def step_impl(context, text):
