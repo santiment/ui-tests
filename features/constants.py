@@ -9,3 +9,4 @@ BROWSERSTACK_SERVER = os.getenv('BROWSERSTACK_SERVER', 'hub.browserstack.com')
 BROWSERSTACK_ACCESS_KEY = os.environ['BROWSERSTACK_ACCESS_KEY']
 BROWSERSTACK_APP_ID = os.getenv('BROWSERSTACK_APP_ID', None)
 WHERE_TO_RUN = os.getenv('WHERE_TO_RUN', 'bs')
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'stage')

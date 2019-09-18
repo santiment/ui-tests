@@ -7,10 +7,10 @@ import time
 import logging
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from datastorage import metrics, selectors, xpaths, chart_settings_options, delta, bot_url, title_conversion
+from datastorage import metrics, selectors, xpaths, chart_settings_options, delta, bot_url, title_conversion, urls
 from selenium.webdriver.common.action_chains import ActionChains
 import urllib.request
-from constants import BOT_LOGIN_SECRET_ENDPOINT
+from constants import BOT_LOGIN_SECRET_ENDPOINT, ENVIRONMENT
 
 class MaxAttemptsLimitException(Exception):
     pass
@@ -38,7 +38,7 @@ def safe_click(element):
 class Mainpage:
 
     def __init__(self, driver, is_logged_in):
-        self.default_url = 'https://app-stage.santiment.net/?metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29'
+        self.default_url = urls[ENVIRONMENT]
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 3)
         if is_logged_in:

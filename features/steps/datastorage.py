@@ -99,3 +99,8 @@ bot_url = "https://api-stage.santiment.net/bot/login/"
 title_conversion = {
     "Santiment Network Token (SAN)": "Santiment (SAN)",
 }
+
+urls = {
+    "stage": "https://app-stage.santiment.net/?metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29",
+    "prod": "https://app.santiment.net/?metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29",
+}
