@@ -2,14 +2,13 @@ from seleniumwire import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
 import time
 import logging
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from datastorage import metrics, selectors, xpaths, chart_settings_options, delta, bot_url, title_conversion, urls
 from selenium.webdriver.common.action_chains import ActionChains
-import urllib.request
 from constants import BOT_LOGIN_SECRET_ENDPOINT, ENVIRONMENT
 
 class MaxAttemptsLimitException(Exception):
@@ -43,11 +42,7 @@ class Mainpage:
         self.wait = WebDriverWait(self.driver, 3)
         if is_logged_in:
             url = bot_url + BOT_LOGIN_SECRET_ENDPOINT
-            request = urllib.request.Request(url, headers={'User-Agent': 'Magic Browser'})
-            token = urllib.request.urlopen(request).read().decode('utf-8')
-            self.driver.header_overrides = {
-            'Authorization': 'Bearer ' + token,
-            }
+            self.driver.get(url)
 
     def navigate_to_main_page(self):
         attempts = 0
