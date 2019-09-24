@@ -19,8 +19,12 @@ pattern = '%H:%M:%S'
 diff = datetime.datetime.strptime(str_finish, pattern) - datetime.datetime.strptime(str_start, pattern) 
 str_diff = str(diff)
 
-message = f"""Test run results:\n
-Started at {str_start}, finished at {str_finish} \n
-Total duration: {str_diff} \n
-Environment: {ENVIRONMENT}"""
+message = f"""
+++++++++++++++++++++++++++++++++++++++++++++++
+Test run results:
+Started at {str_start}, finished at {str_finish}
+Total duration: {str_diff}
+Environment: {ENVIRONMENT}
+===============================================
+"""
 webhook.send(message, username='TestResultsBot', files=files)
