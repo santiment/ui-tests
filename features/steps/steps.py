@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from datastorage import metrics, selectors, xpaths, chart_settings_options, delta, bot_url, title_conversion
 import time
+from constants import ENVIRONMENT
 
 @Given('I load Santiment stage page and "{is_logged_in_str}" log in')
 def step_impl(context, is_logged_in_str):
@@ -87,7 +88,8 @@ def step_impl(context):
     date_to_link = params['to'][0].split('T')[0]
     interval_page = context.mainpage.get_interval()
     interval_link = params['interval'][0]
-    assert netloc == 'app-stage.santiment.net'
+    netloc_expected = 'app-stage.santiment.net' if ENVIRONMENT == 'stage' else 'app.santiment.net'
+    assert netloc == netloc_expected
     assert sorted(metrics_link) == sorted(metrics_page)
     assert title_page == title_link
     assert interval_page == interval_link
