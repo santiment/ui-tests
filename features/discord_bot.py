@@ -15,7 +15,9 @@ files = [File(open(path, 'rb'), os.path.basename(path)) for path in glob.glob(pa
 
 str_start = sys.argv[1]
 str_finish = sys.argv[2]
-str_diff = str(datetime.timedelta(seconds=int(sys.argv[3])))
+pattern = '%H:%M:%S'
+diff = datetime.datetime.strptime(str_finish, pattern) - datetime.datetime.strptime(str_start, pattern) 
+str_diff = str(diff)
 
 message = f"""Test run results:\n
 Started at {str_start}, finished at {str_finish} \n
