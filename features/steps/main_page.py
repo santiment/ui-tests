@@ -111,7 +111,7 @@ class Mainpage:
         selector_dialog = selectors["search_dialog"]
         selector_image = selectors['token_image']
         self.wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR, selector_dialog)))
-        WebDriverWait(self.driver, 7).until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector_image)))
+        WebDriverWait(self.driver, 30).until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector_image)))
 
     def get_period_selector_element(self, period):
         logging.info("Getting period selector for {0}".format(period))

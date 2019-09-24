@@ -107,7 +107,7 @@ def step_impl(context, period):
     start_date = end_date - delta[period][0]
     start_date_graph = datetime.strptime(context.mainpage.get_chart_date('first'), date_pattern)
     end_date_graph = datetime.strptime(context.mainpage.get_chart_date('last'), date_pattern)
-    assert abs(end_date - end_date_graph) < timedelta(days=1)
+    assert abs(end_date - end_date_graph) < timedelta(days=2)
     if period != 'all':
         assert abs(start_date - start_date_graph) < delta[period][1]
 
@@ -148,7 +148,7 @@ def step_impl(context):
     first_name = title.split(' ')[0].lower()
 
     assert nickname == token_currency_element.text
-    assert first_name in token_image_element.get_attribute("src")
+    assert first_name in token_image_element.get_attribute("class")
     assert watch_button.text == "Watch {0}".format(nickname)
     assert add_signal_button.text == "Add signal"
 
