@@ -53,7 +53,7 @@ selectors = {
     "search_result_list": "div.SearchWithSuggestions_suggestions__3z1wA",
     "close_search_dialog": "svg.Dialog_close__wPN0y",
     "token_selector_element": "div.Header_selector__3x1uF",
-    "token_image": 'div.Header_selector__3x1uF img',
+    "token_image": 'div.Header_selector__3x1uF div.project-icon',
     "token_title": "#root div.Header_wrapper__fXGgW div.Header_selector__3x1uF div.Header_project__top__1FwRn h1.Header_project__name__2-7uj",
     "token_description": "div.Header_selector__3x1uF div.Header_project__description__3NwC1",
     "token_price": "div.Header_projectInfo__2RVm0 div.Header_column__2kJMx:nth-child(1) div.Header_usdWrapper__1liTy span:first-child",
