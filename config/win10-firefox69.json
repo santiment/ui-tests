@@ -2,7 +2,7 @@
   "capabilities": {
     "browserstack.debug": true,
     "browserstack.local": false,
-    "name": "UI Tests - Winfows 10 Firefox",
+    "name": "UI Tests - Winfows 10 Firefox"
   },
 
   "environments": [{
