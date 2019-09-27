@@ -18,7 +18,7 @@ if DISCORD_WEBHOOK:
 
     str_start_replaced = str_start.replace(':', '_')
     path_to_report = os.path.join('reports', '*.html')
-    files = [File(open(path, 'rb'), os.path.basename(path).replace('.', f'{ENVIRONMENT}_{CONFIG_FILE}_{str_start_replaced}.')) for path in glob.glob(path_to_report)]
+    files = [File(open(path, 'rb'), os.path.basename(path).replace('.', f'_{ENVIRONMENT}_{CONFIG_FILE}_{str_start_replaced}.')) for path in glob.glob(path_to_report)]
 
     
 
