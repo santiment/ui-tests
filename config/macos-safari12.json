@@ -2,7 +2,7 @@
   "capabilities": {
     "browserstack.debug": true,
     "browserstack.local": false,
-    "name": "UI Tests - macOS Safari",
+    "name": "UI Tests - macOS Safari"
   },
 
   "environments": [{
