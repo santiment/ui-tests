@@ -1,4 +1,4 @@
-from seleniumwire import webdriver
+from selenium import webdriver
 from browserstack.local import Local
 import os, json
 from constants import WHERE_TO_RUN, CONFIG_FILE, TASK_ID, BROWSERSTACK_SERVER, BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, BROWSERSTACK_APP_ID
@@ -26,12 +26,16 @@ def stop_local():
 
 def before_feature(context, feature):
     if WHERE_TO_RUN == 'local':
-        chromedriver_path = os.path.realpath(os.path.join(os.getcwd(), '..', 'bin', 'chromedriver'))
-        if chromedriver_path not in os.environ["PATH"]:
-            os.environ["PATH"] += os.pathsep + chromedriver_path
-        options = webdriver.ChromeOptions()
-        options.add_argument("--start-maximized")
-        context.browser = webdriver.Chrome(chrome_options=options)
+        if 'safari' in CONFIG_FILE:
+            context.browser = webdriver.Safari()
+            context.browser.maximize_window()
+        else:
+            chromedriver_path = os.path.realpath(os.path.join(os.getcwd(), '..', 'bin', 'chromedriver'))
+            if chromedriver_path not in os.environ["PATH"]:
+                os.environ["PATH"] += os.pathsep + chromedriver_path
+            options = webdriver.ChromeOptions()
+            options.add_argument("--start-maximized")
+            context.browser = webdriver.Chrome(chrome_options=options)
     else:
         desired_capabilities = CONFIG['environments'][TASK_ID]
 

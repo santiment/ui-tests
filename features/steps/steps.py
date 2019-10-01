@@ -7,7 +7,7 @@ from datastorage import metrics, selectors, xpaths, chart_settings_options, delt
 import time
 from constants import ENVIRONMENT
 
-@Given('I load Santiment stage page and "{is_logged_in_str}" log in')
+@Given('I load Santiment main page and "{is_logged_in_str}" log in')
 def step_impl(context, is_logged_in_str):
     is_logged_in = is_logged_in_str == 'do'
     context.mainpage = Mainpage(context.browser, is_logged_in)

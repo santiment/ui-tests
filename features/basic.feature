@@ -2,38 +2,38 @@
 Feature: basic stuff
 
 Scenario: Load Main Page
-   Given I load Santiment stage page and "do not" log in
+   Given I load Santiment main page and "do not" log in
    Then page title is "SANbase"
 
 @lightweight
 Scenario: View Main Page Text
-   Given I load Santiment stage page and "do" log in
+   Given I load Santiment main page and "do" log in
    Then I ensure main page is displayed
 
 Scenario: View Main Page Text 2
-Given I load Santiment stage page and "do not" log in
+Given I load Santiment main page and "do not" log in
 Then I ensure main page is displayed
 When I search for "Ethereum" in graph search bar
 
 Scenario: Select Period
-   Given I load Santiment stage page and "do not" log in
+   Given I load Santiment main page and "do not" log in
    Then I ensure main page is displayed
    When I select "1y" period
 
 Scenario: Select Category
-   Given I load Santiment stage page and "do not" log in
+   Given I load Santiment main page and "do not" log in
    Then I ensure main page is displayed
    When I select "Development" category
 
 Scenario: Select Metric
-   Given I load Santiment stage page and "do not" log in
+   Given I load Santiment main page and "do not" log in
    Then I ensure main page is displayed
    When I search for "Ethereum" in graph search bar
    When I select "Twitter" metric
    and I deselect "Price" metric
 
 Scenario: Clear all metrics
-   Given I load Santiment stage page and "do not" log in
+   Given I load Santiment main page and "do not" log in
    When I search for "Ethereum" in graph search bar
    When I select "1m" period
    When I select "Twitter" metric
@@ -43,7 +43,7 @@ Scenario: Clear all metrics
    Then I ensure main page is displayed
 
 Scenario: Select Metric New
-   Given I load Santiment stage page and "do not" log in
+   Given I load Santiment main page and "do not" log in
    When I clear all active metrics
    When I select "Price" metric
    When I select "Volume" metric
@@ -53,7 +53,7 @@ Scenario: Select Metric New
 
 
 Scenario Outline: Verify Link
-   Given I load Santiment stage page and "do not" log in
+   Given I load Santiment main page and "do not" log in
    When I search for "<token>" in graph search bar and select the result
    When I select "1m" period
    When I select "Price" metric
@@ -76,7 +76,7 @@ Examples:
 
 
 Scenario Outline: Verify dates
-   Given I load Santiment stage page and "do not" log in
+   Given I load Santiment main page and "do not" log in
    When I select "<period>" period
    When I wait for "2" seconds
    Then I verify that chart dates are correct for "<period>" period
@@ -93,7 +93,7 @@ Examples:
 | all |
 
 Scenario Outline: Verify token info
-   Given I load Santiment stage page and "do not" log in
+   Given I load Santiment main page and "do not" log in
    When I search for "<token>" in graph search bar and select the result
    Then I verify that token info is displayed correctly
 Examples:
@@ -110,12 +110,12 @@ Examples:
 | TRON |
 
 Scenario: Account menu
-   Given I load Santiment stage page and "do" log in
+   Given I load Santiment main page and "do" log in
    When I open account menu
 
 
 Scenario: Select multiple metrics
-   Given I load Santiment stage page and "do not" log in
+   Given I load Santiment main page and "do not" log in
    When I select "Price, Volume, Development Activity, Social Volume, Social Dominance" metrics
    When I wait for "3" seconds
    When I clear all active metrics

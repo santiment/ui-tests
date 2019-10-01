@@ -31,8 +31,6 @@ chart_settings_options = {
 }
 
 xpaths = {
-    "close_cookies_button": "//button[text()='Accept']",
-    "close_assets_button": "//button[text()='Dismiss']",
     "chart_page_element": """//div[@class="ChartPage_wrapper__805jp"]""",
     "period_selector": "//div[contains(@class, 'ChartPage_ranges__3h7wX')]//div[text()='{0}']",
     "period_selector_active": "//div[contains(@class, 'Selector_selected__2rsUx')]",
@@ -47,13 +45,15 @@ xpaths = {
 }
 
 selectors = {
+    "close_cookies_button": "#root div.CookiePopup_wrapper__c_4dc button.CookiePopup_btn__3Jhvd",
+    "close_assets_button": "#root div.ChartPage_wrapper__805jp div.Tooltip_tooltip__fE-Ct button.SidecarExplanationTooltip_btn__1xriD",
     "chart_header_element": "div.Header_wrapper__fXGgW",
     "search_dialog": 'div.Dialog_modal__1QXQD.Panel_panel__280Ap',
     "search_input": 'input.Input_input__1XjEb',
     "search_result_list": "div.SearchWithSuggestions_suggestions__3z1wA",
     "close_search_dialog": "svg.Dialog_close__wPN0y",
-    "token_selector_element": "div.Header_selector__3x1uF",
-    "token_image": 'div.Header_selector__3x1uF div.project-icon',
+    "token_selector_element": "#root div.Header_wrapper__fXGgW div.Header_selector__3x1uF",
+    "token_image": '#root div.Header_wrapper__fXGgW div.Header_selector__3x1uF div.project-icon',
     "token_title": "#root div.Header_wrapper__fXGgW div.Header_selector__3x1uF div.Header_project__top__1FwRn h1.Header_project__name__2-7uj",
     "token_description": "div.Header_selector__3x1uF div.Header_project__description__3NwC1",
     "token_price": "div.Header_projectInfo__2RVm0 div.Header_column__2kJMx:nth-child(1) div.Header_usdWrapper__1liTy span:first-child",
@@ -101,6 +101,14 @@ title_conversion = {
 }
 
 urls = {
-    "stage": "https://app-stage.santiment.net/?metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29",
-    "prod": "https://app.santiment.net/?metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29",
+    "stage": {
+        'main': "https://app-stage.santiment.net/?metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29",
+        'insights': 'https://insights-stage.santiment.net',
+        'sonar': 'https://app-stage.santiment.net/sonar/my-signals'
+    },
+    "prod": {
+        'main': "https://app.santiment.net/?metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29",
+        'insights': 'https://insights.santiment.net',
+        'sonar': 'https://app.santiment.net/sonar/my-signals'
+    },
 }
