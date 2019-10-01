@@ -1,5 +1,6 @@
-from seleniumwire import webdriver
+from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
@@ -8,8 +9,7 @@ import logging
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from datastorage import metrics, selectors, xpaths, chart_settings_options, delta, bot_url, title_conversion, urls
-from selenium.webdriver.common.action_chains import ActionChains
-from constants import BOT_LOGIN_SECRET_ENDPOINT, ENVIRONMENT
+from constants import BOT_LOGIN_SECRET_ENDPOINT, ENVIRONMENT, CONFIG_FILE
 
 class MaxAttemptsLimitException(Exception):
     pass
@@ -27,7 +27,10 @@ def safe_click(element):
     attempts = 0
     while attempts < 10:
         try:
-            element.click()
+            if 'safari' in CONFIG_FILE:
+                element.send_keys(Keys.RETURN)
+            else:
+                element.click()
             return
         except StaleElementReferenceException:
             time.sleep(0.5)
@@ -37,7 +40,7 @@ def safe_click(element):
 class Mainpage:
 
     def __init__(self, driver, is_logged_in):
-        self.default_url = urls[ENVIRONMENT]
+        self.default_url = urls[ENVIRONMENT]['main']
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 3)
         if is_logged_in:
@@ -57,23 +60,23 @@ class Mainpage:
         raise MaxAttemptsLimitException("Exceeded max attempts limit trying to load main page")
 
     def close_cookie_popup(self):
-        xpath = xpaths["close_cookies_button"]
+        selector = selectors["close_cookies_button"]
         logging.info("Trying to close cookie popup")
         try:
-            button = self.wait.until(EC.visibility_of_element_located((By.XPATH, xpath)))
+            button = self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector)))
             safe_click(button)
-            self.wait.until(EC.invisibility_of_element_located((By.XPATH, xpath)))
+            self.wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR, selector)))
         except TimeoutException:
             logging.info("Already closed")
         logging.info("Closed successfully")
 
     def close_explore_popup(self):
-        xpath = xpaths["close_assets_button"]
+        selector = selectors["close_assets_button"]
         logging.info("Trying to close explore assets popup")
         try:
-            button = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.XPATH, xpath)))
+            button = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector)))
             safe_click(button)
-            self.wait.until(EC.invisibility_of_element_located((By.XPATH, xpath)))
+            self.wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR, selector)))
         except TimeoutException:
             logging.info("Already closed")
         logging.info("Closed successfully")
