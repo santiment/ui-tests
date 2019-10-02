@@ -8,34 +8,17 @@ import time
 import logging
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from datastorage import metrics, selectors, xpaths, chart_settings_options, delta, bot_url, title_conversion, urls
+from datastorage import selectors_main as selectors
+from datastorage import xpaths_main as xpaths
+from datastorage import metrics, chart_settings_options, delta, bot_url, title_conversion, urls
 from constants import BOT_LOGIN_SECRET_ENDPOINT, ENVIRONMENT, CONFIG_FILE
-
-class MaxAttemptsLimitException(Exception):
-    pass
+from common_methods import ClickError, MaxAttemptsLimitException, safe_click
 
 class MissingCategoryException(Exception):
     pass
 
 class MissingMetricException(Exception):
     pass
-
-class ClickError(Exception):
-    pass
-
-def safe_click(element):
-    attempts = 0
-    while attempts < 10:
-        try:
-            if 'safari' in CONFIG_FILE:
-                element.send_keys(Keys.RETURN)
-            else:
-                element.click()
-            return
-        except StaleElementReferenceException:
-            time.sleep(0.5)
-            attempts += 1
-    raise ClickError("Exceeded max click attempts limit on element {0}".format(element))
 
 class Mainpage:
 
@@ -47,7 +30,7 @@ class Mainpage:
             url = bot_url + BOT_LOGIN_SECRET_ENDPOINT
             self.driver.get(url)
 
-    def navigate_to_main_page(self):
+    def navigate_to(self):
         attempts = 0
         selector = selectors["token_image"]
         while attempts < 5:

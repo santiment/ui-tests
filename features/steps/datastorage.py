@@ -30,7 +30,7 @@ chart_settings_options = {
     "download": "Download as PNG",
 }
 
-xpaths = {
+xpaths_main = {
     "chart_page_element": """//div[@class="ChartPage_wrapper__805jp"]""",
     "period_selector": "//div[contains(@class, 'ChartPage_ranges__3h7wX')]//div[text()='{0}']",
     "period_selector_active": "//div[contains(@class, 'Selector_selected__2rsUx')]",
@@ -44,7 +44,7 @@ xpaths = {
     "chart_settings_menu_item": "//button[text()='{0}']",
 }
 
-selectors = {
+selectors_main = {
     "close_cookies_button": "#root div.CookiePopup_wrapper__c_4dc button.CookiePopup_btn__3Jhvd",
     "close_assets_button": "#root div.ChartPage_wrapper__805jp div.Tooltip_tooltip__fE-Ct button.SidecarExplanationTooltip_btn__1xriD",
     "chart_header_element": "div.Header_wrapper__fXGgW",
@@ -82,6 +82,46 @@ selectors = {
     "account_menu_button": "header.Navbar_header__ay1vx div.Navbar_right__1MerY div.dd__trigger:nth-child(3) button.Navbar_btn__3ZCA_",
     "account_menu": "#dd-modal div.NavbarProfileDropdown_wrapper__2mpA1",
     "chart_loader": "#root div.ChartPage_wrapper__805jp div.Chart_loader__1bLXA",
+}
+
+xpaths_insights = {}
+
+selectors_insights = {
+    "close_cookie_popup_button": "body > div.SAN-panel.SAN-panel_context.wrapper.svelte-1ezhlqq > div > button",
+    "featured_insights_title": "body > main > div.insights.bot-scroll.svelte-1rgf045 > div.insights__featured.svelte-1rgf045 > h2",
+    "write_button": "body > main > div.top.svelte-17jgipm > div > a",
+    "tab": "body > main > div.SAN-tabs.tabs.svelte-17jgipm > a.SAN-tab",
+    "active_tab": "body > main > div.SAN-tabs.tabs.svelte-17jgipm > a.SAN-tab.active",
+    "loader": "body > div.bar.svelte-rgfq4j > div",
+    "draft": "body > main > div.insights.bot-scroll.svelte-1czt5h1 > div.SAN-panel.SAN-panel_box wrapper.svelte-1ytyh61",
+    "draft_delete_button": "div > div > svg",
+    "draft_edit_button": "div > div > a",
+    "draft_title": "a.title.svelte-1ytyh61",
+    "draft_text": "h4.svelte-1ytyh61",
+    "draft_timestamp": "div.bottom.svelte-1ytyh61 > h3.svelte-1ytyh61",
+    "insight": "body > main > div.insights.bot-scroll > div.insights__item",
+    "insight_title": "div > div > div.top.svelte-s28iwd > a",
+    "insight_author": "div > div > div.bottom.svelte-s28iwd > div > div > div > a",
+    "insight_timestamp": "div > div > div.bottom.svelte-s28iwd > div > div > div > div",
+    "insight_tag": "div > div.left.svelte-vl3i68 > div.top.svelte-s28iwd > div > a",
+    "insight_tag_title": "div > div.right.svelte-vl3i68 > h3",
+    "insight_like_button": "div > div > div.bottom.svelte-s28iwd > button",
+    "editor_title": "#react-mount-node > div > div.InsightEditor-module_insightWrapper__3CQqa > textarea",
+    "editor_body": "#react-mount-node > div > div.InsightEditor-module_insightWrapper__3CQqa > div > div > div.DraftEditor-root > div.DraftEditor-editorContainer > div > div > h1 > div",
+    "editor_publish_menu_button": "#react-mount-node > div > div.InsightEditor-module_bottom__1VQ3s > div > button",
+    "editor_add_tag": "#react-select-2--value > div.Select-placeholder",
+    "editor_tag_list_item": "#react-select-2--list > div:nth-child(1) > div > div > div.VirtualizedSelectOption",
+    "editor_publish_insight_button": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > button"
+    "read_title": "body > main > div > h1",
+    "read_body": "body > main > div > div.text.svelte-1j8b64g > p",
+    "read_tag": "body > main > div > div.bottom.bot-scroll.svelte-1j8b64g > a",
+    "read_author": "body > main > div > div.insight__info.svelte-1j8b64g > div > div.info.svelte-y4lt2b > a",
+    "read_timestamp": "body > main > div > div.insight__info.svelte-1j8b64g > div > div.info.svelte-y4lt2b > div",
+    "read_follow": "body > main > div > div.insight__info.svelte-1j8b64g > button",
+    "read_like_button": "body > main > div > div.bottom.bot-scroll.svelte-1j8b64g > div > div:nth-child(3) > button.svelte-10pde3u",
+    "read_share_button": "body > main > div > div.bottom.bot-scroll.svelte-1j8b64g > div > div:nth-child(3) > button.SAN-btn.trigger.info__share.svelte-11gg91w",
+    "share_dialog": "body > main > div > div.bottom.bot-scroll.svelte-1j8b64g > div > div:nth-child(3) > div.SAN-panel.SAN-panel_context.dialog.svelte-19nk3mr",
+    "share_dialog_close_button": "body > main > div > div.bottom.bot-scroll.svelte-1j8b64g > div > div:nth-child(3) > div.SAN-panel.SAN-panel_context.dialog.svelte-19nk3mr > div.top.svelte-19nk3mr > svg",
 }
 
 delta = {

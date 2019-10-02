@@ -1,20 +1,30 @@
 from behave import *
 from main_page import Mainpage
+from insights_page import InsightsPage
 import urllib.parse as urlparse
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from datastorage import metrics, selectors, xpaths, chart_settings_options, delta, bot_url, title_conversion
+from datastorage import metrics, delta, title_conversion
 import time
 from constants import ENVIRONMENT
 
+#given steps
 @Given('I load Santiment main page and "{is_logged_in_str}" log in')
 def step_impl(context, is_logged_in_str):
     is_logged_in = is_logged_in_str == 'do'
     context.mainpage = Mainpage(context.browser, is_logged_in)
-    context.mainpage.navigate_to_main_page()
+    context.mainpage.navigate_to()
     context.mainpage.close_cookie_popup()
     context.mainpage.close_explore_popup()
 
+@Given('I load Santiment Insights page and "{is_logged_in_str}" log in')
+def step_impl(context, is_logged_in_str):
+    is_logged_in = is_logged_in_str == 'do'
+    context.insights_page = InsightsPage(context.browser, is_logged_in)
+    context.insights_page.navigate_to()
+    context.insights_page.close_cookie_popup()
+
+#when then steps related to Main page
 @Then('page title is "{title}"')
 def step_impl(context, title):
     assert context.browser.title == title
@@ -183,3 +193,12 @@ def step_impl(context, metrics):
     active_metric_elements = context.mainpage.get_all_active_metric_elements()
     active_metric_names = [element.text for element in active_metric_elements]
     assert sorted(metric_list) == sorted(active_metric_names)
+
+#when then steps related to Insights page
+@Then('I verify Insights page is displayed')
+def step_impl(context):
+    assert context.insights_page.get_write_insight_button().text == "Write insight"
+
+@When('I activate "{tab}" tab')
+def step_impl(context, tab):
+    context.insights_page.activate_tab(tab)
