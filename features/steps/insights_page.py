@@ -5,6 +5,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
 from datastorage import selectors_insights as selectors
 from datastorage import xpaths_insights as xpaths
+import time
+import logging
 from datastorage import bot_url, urls
 from constants import BOT_LOGIN_SECRET_ENDPOINT, ENVIRONMENT
 from common_methods import ClickError, MaxAttemptsLimitException, safe_click
@@ -15,7 +17,7 @@ class InsightsPage:
     def __init__(self, driver, is_logged_in):
         self.default_url = urls[ENVIRONMENT]['insights']
         self.driver = driver
-        self.wait = WebDriverWait(self.driver, 3)
+        self.wait = WebDriverWait(self.driver, 10)
         if is_logged_in:
             url = bot_url + BOT_LOGIN_SECRET_ENDPOINT
             self.driver.get(url)
@@ -54,7 +56,6 @@ class InsightsPage:
 
     def get_tab(self, tab):
         selector = selectors['tab']
-        selector_active = selectors['active_tab']
         element = next(filter(lambda x: x.text == tab, self.driver.find_elements_by_css_selector(selector)))
         return element
 
@@ -62,29 +63,150 @@ class InsightsPage:
         selector = selectors['active_tab']
         return self.driver.find_element_by_css_selector(selector)
 
-    def activate_tab(self, tab):
-        selector_loader = selectors['loader']
-        selector_active = selectors['active_tab']
-        tab_element = self.get_tab(tab)
-        safe_click(tab_element)
-        self.wait.until(
-            lambda wd: wd.find_element_by_css_selector(selector_loader).is_displayed() == False
-        )
-        self.wait.until(
-            lambda wd: wd.find_element_by_css_selector(selector_active).text == tab
-        )
+    def get_loader(self):
+        selector = selectors['loader']
+        return self.driver.find_element_by_css_selector(selector)
 
-    def get_draft_elements(self):
+    def activate_tab(self, tab):
+        if self.get_active_tab().text != tab:
+            tab_element = self.get_tab(tab)
+            safe_click(tab_element)
+            self.wait.until_not(
+                lambda wd: self.get_loader().is_displayed()
+            )
+            self.wait.until(
+                lambda wd: self.get_active_tab().text == tab
+            )
+
+    def get_drafts(self):
         selector = selectors['draft']
         return self.driver.find_elements_by_css_selector(selector)
 
     def get_delete_draft_button(self, draft):
-        selector = selectors['delete_draft_button']
+        selector = selectors['draft_delete_button']
         return draft.find_element_by_css_selector(selector)
 
     def get_edit_draft_button(self, draft):
-        selector = selectors['edit_draft_button']
+        selector = selectors['draft_edit_button']
         return draft.find_element_by_css_selector(selector)
 
-    def get_last_draft(self):
-        return self.get_draft_elements()[0]
+    def get_draft(self, i):
+        return self.get_drafts()[i]
+
+    def delete_draft(self, draft):
+        safe_click(self.get_delete_draft_button(draft))
+        self.wait.until_not(
+            lambda wd: draft.is_displayed()
+        )
+
+    def edit_draft(self, draft):
+        selector = selectors['editor_title']
+        safe_click(self.get_edit_draft_button(draft))
+        self.wait.until(
+            lambda wd: wd.find_element_by_css_selector(selector).is_displayed()
+        )
+
+    def get_editor_title(self):
+        selector = selectors['editor_title']
+        return self.driver.find_element_by_css_selector(selector)
+
+    def get_editor_body(self):
+        selector = selectors['editor_body']
+        return self.driver.find_element_by_css_selector(selector)
+
+    def get_publish_menu_button(self):
+        selector = selectors['editor_publish_menu_button']
+        return self.driver.find_element_by_css_selector(selector)
+
+    def get_tag_input(self):
+        selector = selectors['editor_tag_input']
+        return self.driver.find_element_by_css_selector(selector)
+
+    def get_tag_list_items(self):
+        selector = selectors['editor_tag_list_item']
+        return self.driver.find_elements_by_css_selector(selector)
+
+    def get_tag_list_item(self, item):
+        element = next(filter(lambda x: x.text.lower() == item.lower(), self.get_tag_list_items()))
+        return element
+
+    def get_selected_tags(self):
+        selector = selectors['editor_selected_tag']
+        return self.driver.find_elements_by_css_selector(selector)
+
+    def add_insight_tag(self, tag):
+        self.get_tag_input().send_keys(tag)
+        self.wait.until(
+            lambda wd: tag.lower() in [element.text.lower() for element in self.get_tag_list_items()]
+        )
+        safe_click(self.get_tag_list_item(tag))
+        self.wait.until(
+            lambda wd: tag.lower() in [element.text.lower().strip(' \n') for element in self.get_selected_tags()]
+        )
+
+    def get_publish_insight_button(self):
+        selector = selectors['editor_publish_insight_button']
+        return self.driver.find_element_by_css_selector(selector)
+
+    def open_publish_menu(self):
+        try:
+            self.get_publish_insight_button()
+        except NoSuchElementException:
+            safe_click(self.get_publish_menu_button())
+            self.wait.until(
+                lambda wd: self.get_publish_insight_button().text == 'Publish insight'
+            )
+
+    def get_draft_saved_timestamp(self):
+        selector = selectors['editor_saved_timestamp']
+        return self.driver.find_element_by_css_selector(selector)
+
+    def get_clear_tags_button(self):
+        selector = selectors['editor_clear_tags']
+        return self.driver.find_element_by_css_selector(selector)
+
+    def clear_tags(self):
+        safe_click(self.get_clear_tags_button())
+        self.wait.until(
+            lambda wd: len(self.get_selected_tags()) == 0
+        )
+        self.wait.until(
+            lambda wd: self.get_publish_insight_button().text == 'Publish insight'
+        )
+
+    def open_editor(self):
+        try:
+            self.get_editor_title()
+        except NoSuchElementException:
+            safe_click(self.get_write_insight_button())
+            self.wait.until(
+                lambda wd: self.get_editor_title().is_displayed()
+            )
+
+    def write_insight_title(self, title):
+        self.get_editor_title().send_keys(title)
+
+    def write_insight_body(self, body):
+        safe_click(self.get_editor_body())
+        body_input = self.driver.switch_to.active_element
+        body_input.send_keys(body)
+
+    def write_insight(self, title, body, tags, is_saved):
+        self.open_editor()
+        self.write_insight_title(title)
+        self.write_insight_body(body)
+        self.open_publish_menu()
+        for tag in tags:
+            self.add_insight_tag(tag)
+        if is_saved:
+            safe_click(self.get_publish_insight_button())
+            self.wait.until(
+                lambda wd: self.get_active_tab().text == 'My Insights'
+            )
+        else:
+            self.wait.until(
+                lambda wd: self.get_publish_insight_button().text == 'Publish insight'
+            )
+            self.navigate_to()
+            
+        
