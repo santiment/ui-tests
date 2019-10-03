@@ -3,4 +3,5 @@ Feature: UI tests for Insights page
 Scenario: 1 - log in and verify that page is displayed
   Given I load Santiment Insights page and "do" log in
   Then I verify Insights page is displayed
-  When I activate "My Drafts" tab
+  When I activate "All Insights" tab
+  When I do stuff

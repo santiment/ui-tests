@@ -93,13 +93,16 @@ selectors_insights = {
     "tab": "body > main > div.SAN-tabs.tabs.svelte-17jgipm > a.SAN-tab",
     "active_tab": "body > main > div.SAN-tabs.tabs.svelte-17jgipm > a.SAN-tab.active",
     "loader": "body > div.bar.svelte-rgfq4j > div",
-    "draft": "body > main > div.insights.bot-scroll.svelte-1czt5h1 > div.SAN-panel.SAN-panel_box wrapper.svelte-1ytyh61",
+    "draft": "body > main > div.insights.bot-scroll.svelte-1czt5h1 > div",
     "draft_delete_button": "div > div > svg",
     "draft_edit_button": "div > div > a",
     "draft_title": "a.title.svelte-1ytyh61",
-    "draft_text": "h4.svelte-1ytyh61",
+    "draft_body": "h4.svelte-1ytyh61",
     "draft_timestamp": "div.bottom.svelte-1ytyh61 > h3.svelte-1ytyh61",
-    "insight": "body > main > div.insights.bot-scroll > div.insights__item",
+    "draft_delete_dialog": "div > div > div.SAN-panel.SAN-panel_context.dialog.svelte-19nk3mr",
+    "draft_delete_cancel": "div.SAN-dialog__actions.actions.svelte-1ytyh61 > button:nth-child(1)",
+    "draft_delete_confirm": "div.SAN-dialog__actions.actions.svelte-1ytyh61 > button:nth-child(2)",
+    "insight": "body > main > div.insights > div",
     "insight_title": "div > div > div.top.svelte-s28iwd > a",
     "insight_author": "div > div > div.bottom.svelte-s28iwd > div > div > div > a",
     "insight_timestamp": "div > div > div.bottom.svelte-s28iwd > div > div > div > div",
@@ -107,20 +110,23 @@ selectors_insights = {
     "insight_tag_title": "div > div.right.svelte-vl3i68 > h3",
     "insight_like_button": "div > div > div.bottom.svelte-s28iwd > button",
     "editor_title": "#react-mount-node > div > div.InsightEditor-module_insightWrapper__3CQqa > textarea",
-    "editor_body": "#react-mount-node > div > div.InsightEditor-module_insightWrapper__3CQqa > div > div > div.DraftEditor-root > div.DraftEditor-editorContainer > div > div > div > div",                   
+    "editor_body": "#react-mount-node > div > div.InsightEditor-module_insightWrapper__3CQqa > div > div > div.DraftEditor-root > div.DraftEditor-editorContainer > div > div > div > div",
     "editor_publish_menu_button": "#react-mount-node > div > div.InsightEditor-module_bottom__1VQ3s > div > button",
     "editor_tag_input": "div[id*='react-select-'][id$='--value'] > div.Select-input > input",
+    "editor_tag_list": "div[id*='react-select-'][id$='--list']",
     "editor_tag_list_item": "div[id*='react-select-'][id$='--list'] > div:nth-child(1) > div > div > div.VirtualizedSelectOption",
+    "editor_tag_list_toggle": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > div.Select.Select-module_topDropdown__dOxgi.is-clearable.is-searchable.Select--multi > div > span > span",
     "editor_selected_tag": "span[id*='react-select-'][id*='--value-']",
     "editor_clear_tags": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > div.Select.Select-module_topDropdown__dOxgi > div > span.Select-clear-zone > span",
     "editor_publish_insight_button": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > button",
+    "editor_publish_insight_loader": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > button > div",
     "editor_saved_timestamp": "#react-mount-node > div > div.InsightEditor-module_bottom__1VQ3s > div > span",
     "read_title": "body > main > div > h1",
     "read_body": "body > main > div > div.text.svelte-1j8b64g > p",
     "read_tag": "body > main > div > div.bottom.bot-scroll.svelte-1j8b64g > a",
     "read_author": "body > main > div > div.insight__info.svelte-1j8b64g > div > div.info.svelte-y4lt2b > a",
     "read_timestamp": "body > main > div > div.insight__info.svelte-1j8b64g > div > div.info.svelte-y4lt2b > div",
-    "read_follow": "body > main > div > div.insight__info.svelte-1j8b64g > button",
+    "read_follow_button": "body > main > div > div.insight__info.svelte-1j8b64g > button",
     "read_like_button": "body > main > div > div.bottom.bot-scroll.svelte-1j8b64g > div > div:nth-child(3) > button.svelte-10pde3u",
     "read_share_button": "body > main > div > div.bottom.bot-scroll.svelte-1j8b64g > div > div:nth-child(3) > button.SAN-btn.trigger.info__share.svelte-11gg91w",
     "share_dialog": "body > main > div > div.bottom.bot-scroll.svelte-1j8b64g > div > div:nth-child(3) > div.SAN-panel.SAN-panel_context.dialog.svelte-19nk3mr",
@@ -137,8 +143,6 @@ delta = {
     "all": (relativedelta(), timedelta()),
 }
 
-bot_url = "https://api-stage.santiment.net/bot/login/"
-
 title_conversion = {
     "Santiment Network Token (SAN)": "Santiment (SAN)",
 }
@@ -147,11 +151,13 @@ urls = {
     "stage": {
         'main': "https://app-stage.santiment.net/?metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29",
         'insights': 'https://insights-stage.santiment.net',
-        'sonar': 'https://app-stage.santiment.net/sonar/my-signals'
+        'sonar': 'https://app-stage.santiment.net/sonar/my-signals',
+        'bot': 'https://api-stage.santiment.net/bot/login/'
     },
     "prod": {
         'main': "https://app.santiment.net/?metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29",
         'insights': 'https://insights.santiment.net',
-        'sonar': 'https://app.santiment.net/sonar/my-signals'
+        'sonar': 'https://app.santiment.net/sonar/my-signals',
+        'bot': 'https://api.santiment.net/bot/login/'
     },
 }

@@ -202,3 +202,18 @@ def step_impl(context):
 @When('I activate "{tab}" tab')
 def step_impl(context, tab):
     context.insights_page.activate_tab(tab)
+
+@When('I do stuff')
+def step_impl(context):
+    context.insights_page.write_insight('test title', 'test body', ['san', 'btc'], True)
+    #insight = context.insights_page.get_insight(0)
+    #author = context.insights_page.filter_insights_by_author(insight)
+    #insights_filtered = context.insights_page.get_insights()
+    #for insight in insights_filtered:
+    #    assert context.insights_page.get_insight_author(insight).text == author
+    #context.insights_page.activate_tab('All Insights')
+    #insight = context.insights_page.get_insight(0)
+    #tag = context.insights_page.filter_insights_by_first_tag(insight)
+    #insights_filtered = context.insights_page.get_insights()
+    #for insight in insights_filtered:
+    #    assert tag in [x.text for x in context.insights_page.get_insight_tags(insight)]

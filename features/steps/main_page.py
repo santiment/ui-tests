@@ -10,7 +10,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from datastorage import selectors_main as selectors
 from datastorage import xpaths_main as xpaths
-from datastorage import metrics, chart_settings_options, delta, bot_url, title_conversion, urls
+from datastorage import metrics, chart_settings_options, delta, title_conversion, urls
 from constants import BOT_LOGIN_SECRET_ENDPOINT, ENVIRONMENT, CONFIG_FILE
 from common_methods import ClickError, MaxAttemptsLimitException, safe_click
 
@@ -27,7 +27,7 @@ class Mainpage:
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 3)
         if is_logged_in:
-            url = bot_url + BOT_LOGIN_SECRET_ENDPOINT
+            url = urls[ENVIRONMENT]['bot'] + BOT_LOGIN_SECRET_ENDPOINT
             self.driver.get(url)
 
     def navigate_to(self):
