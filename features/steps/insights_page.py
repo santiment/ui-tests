@@ -366,7 +366,6 @@ class InsightsPage:
         return insight.find_element_by_css_selector(selector)
 
     def read_insight(self, draft):
-        draft_title = self.get_draft_title(draft).text
         safe_click(self.get_draft_title(draft))
         self.wait.until(
             lambda wd: self.get_read_title().is_displayed()
