@@ -274,21 +274,28 @@ class InsightsPage:
         body_input = self.driver.switch_to.active_element
         body_input.send_keys(body)
 
-    def write_insight(self, title, body, tags, is_saved):
-        self.open_editor()
-        self.write_insight_title(title)
-        self.write_insight_body(body)
+    def write_insight_tags(self, tags):
         self.open_publish_menu()
         for tag in tags:
             self.add_insight_tag(tag)
         self.wait.until_not(
             lambda wd: wd.find_element_by_css_selector(selectors['editor_publish_insight_loader']).is_displayed()
         )
-        if is_saved:
-            safe_click(self.get_publish_insight_button())
-            self.wait.until(
-                lambda wd: self.get_active_tab().text == 'My Insights'
-            )
+
+    def publish_insight(self):
+        self.open_publish_menu()
+        safe_click(self.get_publish_insight_button())
+        self.wait.until(
+            lambda wd: self.get_active_tab().text == 'My Insights'
+        )
+
+    def write_insight(self, title, body, tags, is_published):
+        self.open_editor()
+        self.write_insight_title(title)
+        self.write_insight_body(body)
+        self.write_insight_tags(tags)
+        if is_published:
+            self.publish_insight()
         else:
             self.navigate_to()
 
