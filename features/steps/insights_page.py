@@ -289,11 +289,17 @@ class InsightsPage:
             lambda wd: self.get_active_tab().text == 'My Insights'
         )
 
-    def write_insight(self, title, body, tags, is_published):
+    def write_insight(self, title, body, tags):
+        if title:
+            self.write_insight_title(title)
+        if body:
+            self.write_insight_body(body)
+        if tags:
+            self.write_insight_tags(tags)
+
+    def write_insight_and_exit(self, title, body, tags, is_published):
         self.open_editor()
-        self.write_insight_title(title)
-        self.write_insight_body(body)
-        self.write_insight_tags(tags)
+        self.write_insight(title, body, tags)
         if is_published:
             self.publish_insight()
         else:

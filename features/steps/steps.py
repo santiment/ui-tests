@@ -205,7 +205,7 @@ def step_impl(context, tab):
 
 @When('I do stuff')
 def step_impl(context):
-    context.insights_page.write_insight('test title', 'test body', ['san', 'btc'], True)
+    context.insights_page.write_insight_and_exit('test title', 'test body', ['san', 'btc'], True)
     #insight = context.insights_page.get_insight(0)
     #author = context.insights_page.filter_insights_by_author(insight)
     #insights_filtered = context.insights_page.get_insights()
