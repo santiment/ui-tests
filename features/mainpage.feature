@@ -1,3 +1,4 @@
+@prod @stage
 Feature: UI tests for app main page
 
 Scenario: 1 - page defaults are displayed correctly

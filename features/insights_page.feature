@@ -1,3 +1,4 @@
+@prod @stage
 Feature: UI tests for Insights page
 
 Scenario: preparation - clear drafts
@@ -23,7 +24,7 @@ Scenario Outline: 1 - publish Insight menu is disabled if body or title is 5 or 
   |        | aaaaaa | can't    |
   | aaaaa  | aaaaaa | can't    |
   | aaaaaa | aaaaaa | can      |
-@wip
+
 Scenario Outline: 2 - save draft with different title and body lengths and verify draft and preview
   Given I load Santiment Insights page and "do" log in
   Then I verify Insights page is displayed
@@ -42,10 +43,10 @@ Scenario Outline: 2 - save draft with different title and body lengths and verif
   | empty         | long          |          | has          |
   | short         | long          |          | has          |
   | long          | long          |          | has          |
+  | long          | long          | eth, btc | has          |
   | empty         | empty         |          | doesn't have |
   | short         | empty         |          | has          |
   | long          | empty         |          | has          |
-  | long          | empty         | eth, btc | has          |
 
 Scenario Outline: 3 - can't add more than 5 tags
   Given I load Santiment Insights page and "do" log in
@@ -58,12 +59,11 @@ Scenario Outline: 3 - can't add more than 5 tags
   | eth, btc, zrx, trx, san | can't    |
   | eth, btc, zrx, trx      | can      |
 
-Scenario Outline: 4 - publish Insight and verify Insight and preview
+Scenario: 4 - publish Insight and verify Insight and preview
   Given I load Santiment Insights page and "do" log in
   Then I verify Insights page is displayed
   When I save unique Insight title and body
   When I write Insight with unique long title, long body, "san, btc" tags and do publish it
-  When I activate "My Insights" tab
   Then I verify the latest Insight has latest saved title, tags and tag title
   When I activate "All Insights" tab
   Then I verify the latest Insight has latest saved title, tags and tag title
@@ -75,11 +75,12 @@ Scenario Outline: 5 - filtering works properly
   Then I verify Insights page is displayed
   When I save unique Insight title and body
   When I write Insight with unique long title, long body, "san, btc" tags and do publish it
-  When I activate "My Insights" tab
   When I filter Insights by <filter_option> of the latest Insight
+  Then I verify "All Insights" tab is active
   Then I verify Insights are filtered by <filter_option>
   When I activate "All Insights" tab
   When I filter Insights by <filter_option> of the latest Insight
+  Then I verify "All Insights" tab is active
   Then I verify Insights are filtered by <filter_option>
 
   Examples:

@@ -10,7 +10,7 @@ from constants import ENVIRONMENT
 import uuid
 import parse
 
-@parse.with_pattern(r"\w+")
+@parse.with_pattern(r"[\w ,]+")
 def parse_string(text):
      return text.strip()
 
@@ -281,7 +281,9 @@ def step_impl(context, does_have):
     draft = context.insights_page.get_draft(0)
     title = context.insights_page.get_draft_title(draft).text
     body = context.insights_page.get_draft_body(draft).text
+    print(f'actual {title} expected', context.insights_page.last_saved_title)
     title_match = title == context.insights_page.last_saved_title
+    print(f'actual {body} expected', context.insights_page.last_saved_body)
     body_match = body == context.insights_page.last_saved_body
     final_match = title_match and body_match
     assert final_match == does_have_bool
@@ -320,8 +322,11 @@ def step_impl(context, does_have):
     title = context.insights_page.get_read_title().text
     body = context.insights_page.get_read_body().text
     tags = [x.text for x in context.insights_page.get_read_tags()]
+    print(title, context.insights_page.last_saved_title)
     title_match = title == context.insights_page.last_saved_title
+    print(body, context.insights_page.last_saved_body)
     body_match = body == context.insights_page.last_saved_body
+    print(sorted(tags), sorted(context.insights_page.last_saved_tags))
     tags_match = sorted(tags) == sorted(context.insights_page.last_saved_tags)
     final_match = title_match and body_match and tags_match
     assert does_have_bool == final_match
