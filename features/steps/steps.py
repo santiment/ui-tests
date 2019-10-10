@@ -4,9 +4,18 @@ from insights_page import InsightsPage
 import urllib.parse as urlparse
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from datastorage import metrics, delta, title_conversion
+from datastorage import metrics, delta, title_conversion, can_cant, do_dont, insights_filter_options, insights_length_options, have_havent
 import time
 from constants import ENVIRONMENT
+import uuid
+import parse
+
+@parse.with_pattern(r"\w+")
+def parse_string(text):
+     return text.strip()
+
+register_type(Name=parse_string)
+use_step_matcher("cfparse")
 
 #given steps
 @Given('I load Santiment main page and "{is_logged_in_str}" log in')
@@ -202,6 +211,145 @@ def step_impl(context):
 @When('I activate "{tab}" tab')
 def step_impl(context, tab):
     context.insights_page.activate_tab(tab)
+
+@Then('I verify "{tab}" tab is active')
+def step_impl(context, tab):
+    assert tab == context.insights_page.get_active_tab().text
+
+@When('I save unique Insight title and body')
+def step_impl(context):
+    context.insights_page.unique_title_short = str(uuid.uuid1())[:5]
+    context.insights_page.unique_body_short = str(uuid.uuid1())[:5]
+    context.insights_page.unique_title_long = str(uuid.uuid1())[:6]
+    context.insights_page.unique_body_long = str(uuid.uuid1())[:6]
+
+@When('I write Insight with "{title:Name?}" title, "{body:Name?}" body, "{tags_str:Name?}" tags and stay in Editor')
+def step_impl(context, title='', body='', tags_str=''):
+    tags = [x.strip() for x in tags_str.split(',')] if tags_str else []
+    context.insights_page.open_editor()
+    context.insights_page.write_insight(title, body, tags)
+
+@When('I write Insight with unique {title_length} title, {body_length} body, "{tags_str:Name?}" tags and {do_publish} publish it')
+def step_impl(context, title_length, body_length, tags_str, do_publish):
+    if do_publish not in do_dont:
+        raise ValueError(f"do_publish field can only take values from {do_dont}")
+    if title_length not in insights_length_options:
+        raise ValueError(f"title_length field can only take values from {insights_length_options}")
+    if body_length not in insights_length_options:
+        raise ValueError(f"body_length field can only take values from {insights_length_options}")
+    if title_length == 'long':
+        title = context.insights_page.unique_title_long
+    elif title_length == 'short':
+        title = context.insights_page.unique_title_short
+    else:
+        title = ''
+    if body_length == 'long':
+        body = context.insights_page.unique_body_long
+    elif body_length == 'short':
+        body = context.insights_page.unique_body_short
+    else:
+        body = ''
+    tags = [x.strip() for x in tags_str.split(',')] if tags_str else []
+    is_published = do_publish == 'do'
+    context.insights_page.write_insight_and_exit(title, body, tags, is_published)
+    context.insights_page.last_saved_title = title
+    context.insights_page.last_saved_body = body
+    context.insights_page.last_saved_tags = tags
+
+@Then('I verify I {can_publish} publish the Insight')
+def step_impl(context, can_publish):
+    if can_publish not in can_cant:
+        raise ValueError(f"can_publish field can only take values from {can_cant}")
+    is_disabled = 'disabled' in context.insights_page.get_publish_menu_button().get_attribute("class")
+    print(is_disabled)
+    print(can_publish != 'can')
+    assert is_disabled == (can_publish != 'can')
+
+@Then('I verify I {can_add} add more tags')
+def step_impl(context, can_add):
+    if can_add not in can_cant:
+        raise ValueError(f"can_add field can only take values from {can_cant}")
+    can_add_bool = can_add == 'can'
+    context.insights_page.try_toggle_tag_list(True)
+    assert context.insights_page.is_tag_list_displayed() == can_add_bool
+
+@Then('I verify the latest draft {does_have} latest saved title and body')
+def step_impl(context, does_have):
+    if does_have not in have_havent:
+        raise ValueError(f"does_have field can only take values from {have_havent}")
+    does_have_bool = does_have == 'has'
+    draft = context.insights_page.get_draft(0)
+    title = context.insights_page.get_draft_title(draft).text
+    body = context.insights_page.get_draft_body(draft).text
+    title_match = title == context.insights_page.last_saved_title
+    body_match = body == context.insights_page.last_saved_body
+    final_match = title_match and body_match
+    assert final_match == does_have_bool
+
+@Then('I verify the latest Insight {does_have} latest saved title, tags and tag title')
+def step_impl(context, does_have):
+    if does_have not in have_havent:
+        raise ValueError(f"does_have field can only take values from {have_havent}")
+    does_have_bool = does_have == 'has'
+    insight = context.insights_page.get_insight(0)
+    title = context.insights_page.get_insight_title(insight).text
+    tags = [x.text for x in context.insights_page.get_insight_tags(insight)]
+    title_match = title == context.insights_page.last_saved_title
+    tags_match = sorted(tags) == sorted(context.insights_page.last_saved_tags)
+    final_match = title_match and tags_match
+    if tags and context.insights_page.has_tag_title(insight):
+        tag_title = context.insights_page.get_insight_tag_title(insight).text
+        final_match = final_match and tag_title.lower() == f'{tags[0]} price since publication'
+    assert final_match == does_have_bool
+
+@When('I preview the latest draft')
+def step_impl(context):
+    draft = context.insights_page.get_draft(0)
+    context.insights_page.preview_draft(draft)
+
+@When('I read the latest Insight')
+def step_impl(context):
+    insight = context.insights_page.get_insight(0)
+    context.insights_page.read_insight(insight)
+
+@Then('I verify read page {does_have} latest saved title, body and tags')
+def step_impl(context, does_have):
+    if does_have not in have_havent:
+        raise ValueError(f"does_have field can only take values from {have_havent}")
+    does_have_bool = does_have == 'has'
+    title = context.insights_page.get_read_title().text
+    body = context.insights_page.get_read_body().text
+    tags = [x.text for x in context.insights_page.get_read_tags()]
+    title_match = title == context.insights_page.last_saved_title
+    body_match = body == context.insights_page.last_saved_body
+    tags_match = sorted(tags) == sorted(context.insights_page.last_saved_tags)
+    final_match = title_match and body_match and tags_match
+    assert does_have_bool == final_match
+
+@When('I filter Insights by {filter_option} of the latest Insight')
+def step_impl(context, filter_option):
+    if filter_option not in insights_filter_options:
+        raise ValueError(f"filter_option field can only take values from {insights_filter_options}")
+    insight = context.insights_page.get_insight(0)
+    if filter_option == 'author':
+        context.insights_page.filtered_by_author = context.insights_page.filter_insights_by_author(insight)
+    else:
+        context.insights_page.filtered_by_tag = context.insights_page.filter_insights_by_first_tag(insight)
+
+@Then('I verify Insights are filtered by {filter_option}')
+def step_impl(context, filter_option):
+    if filter_option not in insights_filter_options:
+        raise ValueError(f"filter_option field can only take values from {insights_filter_options}")
+    insights = context.insights_page.get_insights()
+    for insight in insights:
+        if filter_option == 'author':
+            assert context.insights_page.filtered_by_author == context.insights_page.get_insight_author(insight).text
+        else:
+            assert context.insights_page.filtered_by_tag in [x.text for x in context.insights_page.get_insight_tags(insight)]
+
+@When('I clear all drafts')
+def step_impl(context):
+    context.insights_page.clear_all_drafts()
 
 @When('I do stuff')
 def step_impl(context):

@@ -111,11 +111,11 @@ selectors_insights = {
     "insight_like_button": "div > div > div.bottom.svelte-s28iwd > button",
     "editor_title": "#react-mount-node > div > div.InsightEditor-module_insightWrapper__3CQqa > textarea",
     "editor_body": "#react-mount-node > div > div.InsightEditor-module_insightWrapper__3CQqa > div > div > div.DraftEditor-root > div.DraftEditor-editorContainer > div > div > div > div",
-    "editor_publish_menu_button": "#react-mount-node > div > div.InsightEditor-module_bottom__1VQ3s > div > button",
+    "editor_publish_menu_button": "#react-mount-node > div > div.InsightEditor-module_bottom__1VQ3s > div button",
     "editor_tag_input": "div[id*='react-select-'][id$='--value'] > div.Select-input > input",
     "editor_tag_list": "div[id*='react-select-'][id$='--list']",
     "editor_tag_list_item": "div[id*='react-select-'][id$='--list'] > div:nth-child(1) > div > div > div.VirtualizedSelectOption",
-    "editor_tag_list_toggle": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > div.Select.Select-module_topDropdown__dOxgi.is-clearable.is-searchable.Select--multi > div > span > span",
+    "editor_tag_list_toggle": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > div.Select.Select-module_topDropdown__dOxgi.Select--multi > div > span.Select-arrow-zone > span",
     "editor_selected_tag": "span[id*='react-select-'][id*='--value-']",
     "editor_clear_tags": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > div.Select.Select-module_topDropdown__dOxgi > div > span.Select-clear-zone > span",
     "editor_publish_insight_button": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > button",
@@ -161,3 +161,9 @@ urls = {
         'bot': 'https://api.santiment.net/bot/login/'
     },
 }
+
+can_cant = ['can', 'cannot', 'can not', "can't"]
+do_dont = ['do', 'do not', "don't"]
+have_havent = ['have', 'has', "have not", "has not," "haven't", "hasn't", "don't have", "doesn't have"]
+insights_filter_options = ['author', 'first tag']
+insights_length_options = ['empty', 'short', 'long']

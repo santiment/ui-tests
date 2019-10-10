@@ -246,6 +246,12 @@ class InsightsPage:
             else:
                 return
 
+    def is_tag_list_displayed(self):
+        try:
+            return self.get_tag_list().is_displayed()
+        except NoSuchElementException:
+            return False
+
     def toggle_tag_list(self, state):
         self.try_toggle_tag_list(state)
         if state:
@@ -294,8 +300,15 @@ class InsightsPage:
             self.write_insight_title(title)
         if body:
             self.write_insight_body(body)
-        if tags:
+        if tags and tags[0]:
             self.write_insight_tags(tags)
+        if title or body:
+            self.wait.until_not(
+                lambda wd: self.get_draft_saved_timestamp().text == 'Saving...'
+            )
+            self.wait.until(
+                lambda wd: self.get_draft_saved_timestamp().text == 'Draft saved a few seconds ago'
+            )
 
     def write_insight_and_exit(self, title, body, tags, is_published):
         self.open_editor()
@@ -363,6 +376,17 @@ class InsightsPage:
         selector = selectors['insight_title']
         return insight.find_element_by_css_selector(selector)
 
+    def get_insight_tag_title(self, insight):
+        selector = selectors['insight_tag_title']
+        return insight.find_element_by_css_selector(selector)
+
+    def has_tag_title(self, insight):
+        try:
+            return self.get_insight_tag_title(insight)
+        except NoSuchElementException:
+            return False
+        return True
+
     def get_insight_author(self, insight):
         selector = selectors['insight_author']
         return insight.find_element_by_css_selector(selector)
@@ -378,8 +402,8 @@ class InsightsPage:
         selector = selectors['insight_timestamp']
         return insight.find_element_by_css_selector(selector)
 
-    def read_insight(self, draft):
-        safe_click(self.get_draft_title(draft))
+    def read_insight(self, insight):
+        safe_click(self.get_insight_title(insight))
         self.wait.until(
             lambda wd: self.get_read_title().is_displayed()
         )
