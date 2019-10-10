@@ -30,7 +30,7 @@ chart_settings_options = {
     "download": "Download as PNG",
 }
 
-xpaths = {
+xpaths_main = {
     "chart_page_element": """//div[@class="ChartPage_wrapper__805jp"]""",
     "period_selector": "//div[contains(@class, 'ChartPage_ranges__3h7wX')]//div[text()='{0}']",
     "period_selector_active": "//div[contains(@class, 'Selector_selected__2rsUx')]",
@@ -44,7 +44,7 @@ xpaths = {
     "chart_settings_menu_item": "//button[text()='{0}']",
 }
 
-selectors = {
+selectors_main = {
     "close_cookies_button": "#root div.CookiePopup_wrapper__c_4dc button.CookiePopup_btn__3Jhvd",
     "close_assets_button": "#root div.ChartPage_wrapper__805jp div.Tooltip_tooltip__fE-Ct button.SidecarExplanationTooltip_btn__1xriD",
     "chart_header_element": "div.Header_wrapper__fXGgW",
@@ -84,6 +84,55 @@ selectors = {
     "chart_loader": "#root div.ChartPage_wrapper__805jp div.Chart_loader__1bLXA",
 }
 
+xpaths_insights = {}
+
+selectors_insights = {
+    "close_cookie_popup_button": "body > div.SAN-panel.SAN-panel_context.wrapper > div > button",
+    "featured_insights_title": "body > main > div.insights.bot-scroll > div.insights__featured > h2",
+    "write_button": "body > main > div.top > div > a",
+    "tab": "body > main > div.SAN-tabs.tabs > a.SAN-tab",
+    "active_tab": "body > main > div.SAN-tabs.tabs > a.SAN-tab.active",
+    "loader": "body > div.bar > div",
+    "draft": "body > main > div.insights.bot-scroll > div",
+    "draft_delete_button": "div > div > svg",
+    "draft_edit_button": "div > div > a",
+    "draft_title": "a.title",
+    "draft_body": "h4",
+    "draft_timestamp": "div.bottom > h3:nth-child(1)",
+    "draft_delete_dialog": "div > div > div.SAN-panel.SAN-panel_context.dialog",
+    "draft_delete_cancel": "div.SAN-dialog__actions.actions > button:nth-child(1)",
+    "draft_delete_confirm": "div.SAN-dialog__actions.actions > button:nth-child(2)",
+    "insight": "body > main > div.insights div.insights__item",
+    "insight_title": "div > div > div.top> a",
+    "insight_author": "div > div > div.bottom> div > div > div > a",
+    "insight_timestamp": "div > div > div.bottom> div > div > div > div",
+    "insight_tag": "div > div.left > div.top> div > a",
+    "insight_tag_title": "div > div.right > h3",
+    "insight_like_button": "div > div > div.bottom> button",
+    "editor_title": "#react-mount-node > div > div.InsightEditor-module_insightWrapper__3CQqa > textarea",
+    "editor_body": "#react-mount-node > div > div.InsightEditor-module_insightWrapper__3CQqa > div > div > div.DraftEditor-root > div.DraftEditor-editorContainer > div > div > div > div",
+    "editor_publish_menu_button": "#react-mount-node > div > div.InsightEditor-module_bottom__1VQ3s > div button",
+    "editor_tag_input": "div[id*='react-select-'][id$='--value'] > div.Select-input > input",
+    "editor_tag_list": "div[id*='react-select-'][id$='--list']",
+    "editor_tag_list_item": "div[id*='react-select-'][id$='--list'] > div:nth-child(1) > div > div > div.VirtualizedSelectOption",
+    "editor_tag_list_toggle": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > div.Select.Select-module_topDropdown__dOxgi.Select--multi > div > span.Select-arrow-zone > span",
+    "editor_selected_tag": "span[id*='react-select-'][id*='--value-']",
+    "editor_clear_tags": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > div.Select.Select-module_topDropdown__dOxgi > div > span.Select-clear-zone > span",
+    "editor_publish_insight_button": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > button",
+    "editor_publish_insight_loader": "body > div.Modal-module_wrapper__3yPRh.ContextMenu-module_wrapper__NSGRk > div.Tooltip-module_tooltip__5Yj1c.ContextMenu-module_menu__3N81H > div > button > div",
+    "editor_saved_timestamp": "#react-mount-node > div > div.InsightEditor-module_bottom__1VQ3s > div > span",
+    "read_title": "body > main > div.insight > h1.title",
+    "read_body": "body > main > div > div.text > p",
+    "read_tag": "body > main > div > div.bottom.bot-scroll > a",
+    "read_author": "body > main > div > div.insight__info > div > div.info > a",
+    "read_timestamp": "body > main > div > div.insight__info > div > div.info > div",
+    "read_follow_button": "body > main > div > div.insight__info > button",
+    "read_like_button": "body > main > div > div.bottom.bot-scroll > div > div:nth-child(3) > button",
+    "read_share_button": "body > main > div > div.bottom.bot-scroll > div > div:nth-child(3) > button.SAN-btn.trigger.info__share",
+    "share_dialog": "body > main > div > div.bottom.bot-scroll > div > div:nth-child(3) > div.SAN-panel.SAN-panel_context.dialog",
+    "share_dialog_close_button": "body > main > div > div.bottom.bot-scroll > div > div:nth-child(3) > div.SAN-panel.SAN-panel_context.dialog > div.top > svg",
+}
+
 delta = {
     "1d": (relativedelta(days=1), timedelta(days=1)),
     "1w": (relativedelta(weeks=1), timedelta(days=1)),
@@ -94,8 +143,6 @@ delta = {
     "all": (relativedelta(), timedelta()),
 }
 
-bot_url = "https://api-stage.santiment.net/bot/login/"
-
 title_conversion = {
     "Santiment Network Token (SAN)": "Santiment (SAN)",
 }
@@ -104,11 +151,19 @@ urls = {
     "stage": {
         'main': "https://app-stage.santiment.net/?metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29",
         'insights': 'https://insights-stage.santiment.net',
-        'sonar': 'https://app-stage.santiment.net/sonar/my-signals'
+        'sonar': 'https://app-stage.santiment.net/sonar/my-signals',
+        'bot': 'https://api-stage.santiment.net/bot/login/'
     },
     "prod": {
         'main': "https://app.santiment.net/?metrics=historyPrice&slug=bitcoin&title=Bitcoin%20%28BTC%29",
         'insights': 'https://insights.santiment.net',
-        'sonar': 'https://app.santiment.net/sonar/my-signals'
+        'sonar': 'https://app.santiment.net/sonar/my-signals',
+        'bot': 'https://api.santiment.net/bot/login/'
     },
 }
+
+can_cant = ['can', 'cannot', 'can not', "can't"]
+do_dont = ['do', 'do not', "don't"]
+have_havent = ['have', 'has', "have not", "has not," "haven't", "hasn't", "don't have", "doesn't have"]
+insights_filter_options = ['author', 'first tag']
+insights_length_options = ['empty', 'short', 'long']

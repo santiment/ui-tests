@@ -1,3 +1,4 @@
+@prod @stage
 Feature: UI tests for app main page
 
 Scenario: 1 - page defaults are displayed correctly
@@ -6,7 +7,7 @@ Scenario: 1 - page defaults are displayed correctly
     Then I verify that calendar dates are correct for "6m" period
     Then I verify that chart dates are correct for "6m" period
     Then I verify that token info is displayed correctly
-@wip
+
 Scenario Outline: 2 - period selection works correctly
     Given I load Santiment main page and "do not" log in
     When I select "<period>" period
