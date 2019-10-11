@@ -1,4 +1,4 @@
-@prod @stage
+@stage
 Feature: UI tests for Insights page
 
 Scenario: preparation - clear drafts
