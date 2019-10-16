@@ -19,7 +19,7 @@ class InsightsPage:
     def __init__(self, driver, is_logged_in):
         self.default_url = urls[ENVIRONMENT]['insights']
         self.driver = driver
-        self.wait = WebDriverWait(self.driver, 10)
+        self.wait = WebDriverWait(self.driver, 60, ignored_exceptions=[StaleElementReferenceException])
         if is_logged_in:
             url = urls[ENVIRONMENT]['bot'] + BOT_LOGIN_SECRET_ENDPOINT
             self.driver.get(url)

@@ -25,7 +25,7 @@ class Mainpage:
     def __init__(self, driver, is_logged_in):
         self.default_url = urls[ENVIRONMENT]['main']
         self.driver = driver
-        self.wait = WebDriverWait(self.driver, 3)
+        self.wait = WebDriverWait(self.driver, 60, ignored_exceptions=[StaleElementReferenceException])
         if is_logged_in:
             url = urls[ENVIRONMENT]['bot'] + BOT_LOGIN_SECRET_ENDPOINT
             self.driver.get(url)
@@ -57,7 +57,7 @@ class Mainpage:
         selector = selectors["close_assets_button"]
         logging.info("Trying to close explore assets popup")
         try:
-            button = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector)))
+            button = self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector)))
             safe_click(button)
             self.wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR, selector)))
         except TimeoutException:
