@@ -80,9 +80,9 @@ def step_impl(context):
 def step_impl(context):
     context.mainpage.close_share_dialog()
 
-@When('I clear all active metrics')
+@When('I clear active metrics')
 def step_impl(context):
-    context.mainpage.clear_all_active_metrics()
+    context.mainpage.clear_active_metrics()
 
 @Then('I verify that share link contains correct data')
 def step_impl(context):

@@ -28,18 +28,18 @@ Scenario: Select Category
 Scenario: Select Metric
    Given I load Santiment main page and "do not" log in
    Then I ensure main page is displayed
-   When I search for "Ethereum" in graph search bar
+   When I search for "Ethereum" in graph search bar and select the result
    When I select "Twitter" metric
    and I deselect "Price" metric
-
+@wip
 Scenario: Clear all metrics
    Given I load Santiment main page and "do not" log in
-   When I search for "Ethereum" in graph search bar
+   When I search for "Ethereum" in graph search bar and select the result
    When I select "1m" period
    When I select "Twitter" metric
    and I select "Volume" metric
    and I select "Development Activity" metric
-   When I clear all active metrics
+   When I clear active metrics
    Then I ensure main page is displayed
 
 Scenario: Select Metric New

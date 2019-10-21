@@ -41,7 +41,7 @@ class InsightsPage:
     def close_cookie_popup(self):
         selector = selectors["close_cookie_popup_button"]
         try:
-            self.wait.until(
+            WebDriverWait(self.driver, 5).until(
                 lambda wd: self.driver.find_element_by_css_selector(selector).is_displayed()
             )
         except TimeoutException:
