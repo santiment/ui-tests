@@ -40,6 +40,7 @@ selectors_main_ref = {
     "page_loader_small": "#root > div > div.page.detailed > div > div.PageLoader_loader__2q97l",
     "close_cookie_popup_button": "#root > div > div.CookiePopup_wrapper__c_4dc > button",
     "close_explore_popup_button": "#root > div > div.page.detailed > div:nth-child(1) > div > div.ChartPage_wrapper__805jp > div.ChartSidecar_wrapper__3FE6D > div > div.Tooltip_tooltip__fE-Ct > button",
+    "close_signals_popup_button": "#root > div > div.page.detailed > div:nth-child(1) > div > div.ChartPage_wrapper__805jp > div.ChartPage_tool__2vx_W > div > div.Chart_wrapper__28v4S.ChartPage_chart__34CY1 > div:nth-child(1) > div > div > button",
     "search_dialog": 'body > div.Modal_wrapper__3lQw2.Dialog_wrapper__zgx32 > div.Dialog_modal__1QXQD.Panel_panel__280Ap',
     "search_dialog_close": "body > div.Modal_wrapper__3lQw2.Dialog_wrapper__zgx32 > div.Dialog_modal__1QXQD.Panel_panel__280Ap > div.Panel_header__x1vbc > svg",
     "search_input": 'body > div.Modal_wrapper__3lQw2.Dialog_wrapper__zgx32 > div.Dialog_modal__1QXQD.Panel_panel__280Ap > div.Dialog_content__HslRr > div.SearchWithSuggestions_wrapper__3BM6h > div > input',

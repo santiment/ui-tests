@@ -25,6 +25,8 @@ def step_impl(context, is_logged_in_str):
     context.mainpage.navigate_to()
     context.mainpage.close_cookie_popup()
     context.mainpage.close_explore_popup()
+    context.mainpage.close_signals_popup()
+
 
 @Given('I load Santiment Insights page and "{is_logged_in_str}" log in')
 def step_impl(context, is_logged_in_str):
@@ -40,7 +42,7 @@ def step_impl(context, title):
 
 @Then('I ensure main page is displayed')
 def step_impl(context):
-    assert context.mainpage.get_chart_page_element().is_displayed() == True
+    assert context.mainpage.get_chart_page().is_displayed() == True
 
 @When('I search for "{text}" in graph search bar')
 def step_impl(context, text):
@@ -65,8 +67,7 @@ def step_impl(context, metric):
 @When('I select "{metrics}" metrics')
 def step_impl(context, metrics):
     metrics_list = [x.strip() for x in metrics.split(',')]
-    for metric in metrics_list:
-        context.mainpage.select_metric(metric)
+    context.mainpage.select_metrics(metrics_list)
 
 @When('I deselect "{metric}" metric')
 def step_impl(context, metric):
@@ -87,14 +88,14 @@ def step_impl(context):
 @Then('I verify that share link contains correct data')
 def step_impl(context):
     context.mainpage.open_share_dialog()
-    link = context.mainpage.get_share_link_value()
+    link = context.mainpage.get_share_dialog_link_value()
     context.mainpage.close_share_dialog()
     parsed = urlparse.urlparse(link)
     netloc = parsed.netloc
     params = urlparse.parse_qs(parsed.query)
     metrics_link = params['metrics'][0].split(',')
-    metrics_page = [metrics[metric][1] for metric in context.mainpage.get_all_active_metrics()]
-    title_page = context.mainpage.get_token_title()
+    metrics_page = [metrics[metric.text][1] for metric in context.mainpage.get_active_metrics()]
+    title_page = context.mainpage.get_token_title().text
     if title_page in title_conversion:
         title_page = title_conversion[title_page]
     title_link = params['title'][0]
@@ -105,9 +106,11 @@ def step_impl(context):
     date_to_page_converted = datetime.strftime(date_to_page_corrected, '%Y-%m-%d')
     date_from_link = params['from'][0].split('T')[0]
     date_to_link = params['to'][0].split('T')[0]
-    interval_page = context.mainpage.get_interval()
+    interval_page = context.mainpage.get_interval_button().text
     interval_link = params['interval'][0]
     netloc_expected = 'app-stage.santiment.net' if ENVIRONMENT == 'stage' else 'app.santiment.net'
+    print(title_page, title_link)
+    print(metrics_page, metrics_link)
     assert netloc == netloc_expected
     assert sorted(metrics_link) == sorted(metrics_page)
     assert title_page == title_link
@@ -126,8 +129,8 @@ def step_impl(context, period):
     date_pattern = '%d %b %y'
     end_date = datetime.combine(datetime.today().date(), datetime.min.time())
     start_date = end_date - delta[period][0]
-    start_date_graph = datetime.strptime(context.mainpage.get_chart_date('first'), date_pattern)
-    end_date_graph = datetime.strptime(context.mainpage.get_chart_date('last'), date_pattern)
+    start_date_graph = datetime.strptime(context.mainpage.get_chart_dates()[0].text, date_pattern)
+    end_date_graph = datetime.strptime(context.mainpage.get_chart_dates()[-1].text, date_pattern)
     assert abs(end_date - end_date_graph) < timedelta(days=2)
     if period != 'all':
         assert abs(start_date - start_date_graph) < delta[period][1]
@@ -146,15 +149,14 @@ def step_impl(context, period):
 
 @Then('I verify that token info is displayed correctly')
 def step_impl(context):
-    token_title_element = context.mainpage.get_token_title_element()
-    token_image_element = context.mainpage.get_token_image_element()
-    token_price_element = context.mainpage.get_token_price_element()
-    token_volume_element = context.mainpage.get_token_volume_element()
-    token_currency_element = context.mainpage.get_token_currency_element()
+    token_price_element = context.mainpage.get_token_price()
+    token_volume_element = context.mainpage.get_token_volume()
+    token_currency_element = context.mainpage.get_token_currency()
     add_signal_button = context.mainpage.get_add_signal_button()
     watch_button = context.mainpage.get_watch_button()
 
-    assert token_title_element.is_displayed()
+    assert context.mainpage.get_token_title().is_displayed()
+    assert context.mainpage.get_token_image().is_displayed()
     assert token_price_element.is_displayed()
     assert token_volume_element.is_displayed()
     assert token_currency_element.is_displayed()
@@ -162,14 +164,14 @@ def step_impl(context):
     assert watch_button.is_displayed()
 
 
-    title = token_title_element.text
+    title = context.mainpage.get_token_title().text
     nickname = title.split(' ')[-1]
     for x in '() ':
         nickname = nickname.replace(x, '')
     first_name = title.split(' ')[0].lower()
 
     assert nickname == token_currency_element.text
-    assert first_name in token_image_element.get_attribute("class")
+    assert first_name in context.mainpage.get_token_image().get_attribute("class")
     assert watch_button.text == "Watch {0}".format(nickname)
     assert add_signal_button.text == "Add signal"
 
@@ -188,19 +190,19 @@ def step_impl(context):
 
 @Then('I verify that "{period}" period is selected')
 def step_impl(context, period):
-    active_period_element = context.mainpage.get_active_period_element()
+    active_period_element = context.mainpage.get_active_period()
     assert active_period_element.text == period
 
 @Then('I verify that "{metric}" metric is active')
 def step_impl(context, metric):
-    active_metric_elements = context.mainpage.get_all_active_metric_elements()
-    assert metric in [element.text for element in active_metric_elements]
+    active_metrics = context.mainpage.get_active_metrics()
+    assert metric in [element.text for element in active_metrics]
 
 @Then('I verify that "{metrics}" metrics are active')
 def step_impl(context, metrics):
     metric_list = [x.strip() for x in metrics.split(',')]
-    active_metric_elements = context.mainpage.get_all_active_metric_elements()
-    active_metric_names = [element.text for element in active_metric_elements]
+    active_metrics = context.mainpage.get_active_metrics()
+    active_metric_names = [element.text for element in active_metrics]
     assert sorted(metric_list) == sorted(active_metric_names)
 
 #when then steps related to Insights page

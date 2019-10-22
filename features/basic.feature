@@ -31,7 +31,7 @@ Scenario: Select Metric
    When I search for "Ethereum" in graph search bar and select the result
    When I select "Twitter" metric
    and I deselect "Price" metric
-@wip
+
 Scenario: Clear all metrics
    Given I load Santiment main page and "do not" log in
    When I search for "Ethereum" in graph search bar and select the result

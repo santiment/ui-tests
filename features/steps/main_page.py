@@ -44,6 +44,32 @@ class Mainpage:
                 lambda wd: self.driver.find_element_by_css_selector(selector).is_displayed()
             )
 
+    def find_element_anti_stale(self, selector):
+        attempts = 0
+        while attempts < 5:
+            try:
+                element = self.driver.find_element_by_css_selector(selector)
+                time.sleep(1)
+                element.is_displayed()
+            except StaleElementReferenceException:
+                attempts += 1
+            else:
+                return element
+        raise StaleElementReferenceException(f"Exceeded max attempts limit trying to get element {selector}")
+
+    def find_elements_anti_stale(self, selector):
+        attempts = 0
+        while attempts < 5:
+            try:
+                elements = self.driver.find_elements_by_css_selector(selector)
+                time.sleep(1)
+                [element.is_displayed() for element in elements]
+            except StaleElementReferenceException:
+                attempts += 1
+            else:
+                return elements
+        raise StaleElementReferenceException(f"Exceeded max attempts limit trying to get element {selector}")
+
     def navigate_to(self):
         attempts = 0
         selector = selectors["token_image"]
@@ -61,9 +87,9 @@ class Mainpage:
                 return
         raise MaxAttemptsLimitException("Exceeded max attempts limit trying to load main page")
 
-    def close_popup(self, selector):
+    def close_popup(self, selector, timeout):
         try:
-            self.basic_wait(selector, True, 15)
+            self.basic_wait(selector, True, timeout)
         except TimeoutException:
             return
         button = self.driver.find_element_by_css_selector(selector)
@@ -71,10 +97,13 @@ class Mainpage:
         self.basic_wait(selector, False)
 
     def close_cookie_popup(self):
-        self.close_popup(selectors["close_cookie_popup_button"])
+        self.close_popup(selectors["close_cookie_popup_button"], 5)
 
     def close_explore_popup(self):
-        self.close_popup(selectors["close_explore_popup_button"])
+        self.close_popup(selectors["close_explore_popup_button"], 10)
+
+    def close_signals_popup(self):
+        self.close_popup(selectors["close_signals_popup_button"], 10)
 
     def get_chart_page(self):
         selector = selectors["chart_page"]
@@ -109,7 +138,7 @@ class Mainpage:
 
     def get_token_selector(self):
         selector = selectors["token_selector"]
-        return self.driver.find_element_by_css_selector(selector)
+        return self.find_element_anti_stale(selector)
 
     def open_search_dialog(self):
         try:
@@ -153,7 +182,7 @@ class Mainpage:
     def get_period(self, period):
         element = next(filter(lambda x: x.text.lower() == period.lower(), self.get_periods()))
         return element
-    
+
     def get_active_period(self):
         selector = selectors["period_active"]
         return self.driver.find_element_by_css_selector(selector)
@@ -282,6 +311,9 @@ class Mainpage:
             self.basic_wait(selector, False)
             self.close_metrics_menu()
 
+    def select_metrics(self, metrics):
+        for metric in metrics:
+            self.select_metric(metric)
 
     def deselect_metric(self, metric):
         try:
@@ -375,7 +407,7 @@ class Mainpage:
 
     def get_token_title(self):
         selector = selectors["token_title"]
-        return self.driver.find_element_by_css_selector(selector)
+        return self.find_element_anti_stale(selector)
 
     def get_calendar_button(self):
         selector = selectors["calendar_button"]
@@ -392,8 +424,8 @@ class Mainpage:
         selector = selectors["interval_button"]
         return self.driver.find_element_by_css_selector(selector)
 
-    def get_chart_dates(self, order):
-        selector = selectors["chart_date"]
+    def get_chart_dates(self):
+        selector = selectors["chart_axis_date"]
         return self.driver.find_elements_by_css_selector(selector)
 
     def get_chart_header(self):
@@ -402,21 +434,21 @@ class Mainpage:
 
     def get_token_image(self):
         selector = selectors["token_image"]
-        return self.driver.find_element_by_css_selector(selector)
+        return self.find_element_anti_stale(selector)
 
     def get_token_description(self):
         selector = selectors["token_description"]
-        return self.driver.find_element_by_css_selector(selector)
+        return self.find_element_anti_stale(selector)
 
-    def get_header_token_price(self):
+    def get_token_price(self):
         selector = selectors["token_price"]
         return self.driver.find_element_by_css_selector(selector)
 
-    def get_header_token_volume(self):
+    def get_token_volume(self):
         selector = selectors["token_volume"]
         return self.driver.find_element_by_css_selector(selector)
 
-    def get_header_token_currency(self):
+    def get_token_currency(self):
         selector = selectors["token_volume_currency"]
         return self.driver.find_element_by_css_selector(selector)
 
@@ -433,7 +465,7 @@ class Mainpage:
         return self.driver.find_element_by_css_selector(selector)
 
     def open_account_menu(self):
+        selector = selectors["account_menu"]
         button = self.get_account_menu_button()
         safe_click(button)
-        selector = selectors["account_menu"]
-        return self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector)))
+        self.basic_wait(selector, True)

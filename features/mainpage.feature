@@ -45,7 +45,7 @@ Examples:
 Scenario: 4 - metric selection and clearing works properly
     Given I load Santiment main page and "do not" log in
     When I select "Price, Volume, Social Volume, Social Dominance, Development Activity" metrics
-    When I clear all active metrics
+    When I clear active metrics
     When I select "Price, Volume, Social Volume, Social Dominance, Development Activity" metrics
     Then I verify that "Price, Volume, Social Volume, Social Dominance, Development Activity" metrics are active
 

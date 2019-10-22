@@ -38,6 +38,32 @@ class InsightsPage:
                 attempts += 1
         raise MaxAttemptsLimitException("Exceeded max attempts limit trying to load Insights page")
 
+    def find_element_anti_stale(self, selector):
+        attempts = 0
+        while attempts < 5:
+            try:
+                element = self.driver.find_element_by_css_selector(selector)
+                time.sleep(1)
+                element.is_displayed()
+            except StaleElementReferenceException:
+                attempts += 1
+            else:
+                return element
+        raise StaleElementReferenceException(f"Exceeded max attempts limit trying to get element {selector}")
+
+    def find_elements_anti_stale(self, selector):
+        attempts = 0
+        while attempts < 5:
+            try:
+                elements = self.driver.find_elements_by_css_selector(selector)
+                time.sleep(1)
+                [element.is_displayed() for element in elements]
+            except StaleElementReferenceException:
+                attempts += 1
+            else:
+                return elements
+        raise StaleElementReferenceException(f"Exceeded max attempts limit trying to get element {selector}")
+
     def close_cookie_popup(self):
         selector = selectors["close_cookie_popup_button"]
         try:
