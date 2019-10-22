@@ -31,11 +31,7 @@ chart_settings_options = {
     "download": "Download as PNG",
 }
 
-xpaths_main = {
-
-}
-
-selectors_main_ref = {
+selectors_main = {
     "page_loader_big": "#root > div.loader",
     "page_loader_small": "#root > div > div.page.detailed > div > div.PageLoader_loader__2q97l",
     "close_cookie_popup_button": "#root > div > div.CookiePopup_wrapper__c_4dc > button",
@@ -101,48 +97,6 @@ selectors_main_ref = {
     "account_menu_button": "#root > div > header > div > div.Navbar_right__1MerY > div:nth-child(3) > button",
     "account_menu": "#dd-modal > div > div.dd__list",
 }
-
-selectors_main = {
-    "close_cookies_button": "#root > div > div.CookiePopup_wrapper__c_4dc > button",
-    "close_assets_button": "#root > div > div.page.detailed > div:nth-child(1) > div > div.ChartPage_wrapper__805jp > div.ChartSidecar_wrapper__3FE6D > div > div.Tooltip_tooltip__fE-Ct > button",
-    "chart_header_element": "div.Header_wrapper__fXGgW",
-    "search_dialog": 'div.Dialog_modal__1QXQD.Panel_panel__280Ap',
-    "search_input": 'input.Input_input__1XjEb',
-    "search_result_list": "div.SearchWithSuggestions_suggestions__3z1wA",
-    "close_search_dialog": "svg.Dialog_close__wPN0y",
-    "token_selector_element": "#root div.Header_wrapper__fXGgW div.Header_selector__3x1uF",
-    "token_image": '#root div.Header_wrapper__fXGgW div.Header_selector__3x1uF div.project-icon',
-    "token_title": "#root div.Header_wrapper__fXGgW div.Header_selector__3x1uF div.Header_project__top__1FwRn h1.Header_project__name__2-7uj",
-    "token_description": "div.Header_selector__3x1uF div.Header_project__description__3NwC1",
-    "token_price": "div.Header_projectInfo__2RVm0 div.Header_column__2kJMx:nth-child(1) div.Header_usdWrapper__1liTy span:first-child",
-    "token_price_currency": "div.Header_projectInfo__2RVm0 div.Header_column__2kJMx:nth-child(1) div.Header_usdWrapper__1liTy span.Header_currency__3vx-4",
-    "token_volume": "div.Header_projectInfo__2RVm0 div.Header_column__2kJMx:nth-child(1) div:last-child span:first-child",
-    "token_volume_currency": "div.Header_projectInfo__2RVm0 div.Header_column__2kJMx:nth-child(1) div:last-child span.Header_currency__3vx-4",
-    "add_signal_button": "div.Header_actions__2wTa5 button:nth-child(2)",
-    "watch_button": "div.Header_actions__2wTa5 button:nth-child(3)",
-    "metrics_menu": "div.Tooltip_tooltip__fE-Ct.ContextMenu_menu__35C1n",
-    "metrics_menu_title": "div.Tooltip_tooltip__fE-Ct.ContextMenu_menu__35C1n div.Panel_header__x1vbc.ChartMetricSelector_header__31oOd",
-    "modal_overlay": "div.Modal_wrapper__3lQw2.ContextMenu_wrapper__3VXIO",
-    "metrics_categories": 'div.ChartMetricSelector_column__2SqCU.ChartMetricSelector_categories__uBPiA',
-    "metrics_list": 'div.ChartMetricSelector_group__FhAJt',
-    "active_metrics_panel": 'section.ChartActiveMetrics_wrapper__3Z0I8',
-    "close_active_metric": 'svg.ChartActiveMetrics_icon__17g9k',
-    "share_dialog": 'div.Dialog_modal__1QXQD.Panel_panel__280Ap',
-    "share_link": 'input.Input_input__1XjEb.SharePanel_link__input__2bRzG',
-    "close_share_dialog": 'svg.Dialog_close__wPN0y',
-    "graph_title": 'div.ChartPage_title__fLVYV',
-    "calendar_dates": 'button.CalendarBtn_btn__2WS5X',
-    "interval": 'div.Dropdown_wrapper__2SIQh.IntervalSelector_wrapper__3_304',
-    "metrics_menu_button": "button.ChartMetricsTool_trigger__3DzJE",
-    "chart_settings_button": "div.ChartPage_settings__group__p-3hT button.Button_button__16STw.Button_flat__2o9Q6",
-    "chart_settings_menu": "div.Tooltip_tooltip__fE-Ct.ContextMenu_menu__35C1n",
-    "chart_date": "div.recharts-wrapper g.recharts-cartesian-axis-ticks g.recharts-layer.recharts-cartesian-axis-tick:{0}-child tspan",
-    "account_menu_button": "header.Navbar_header__ay1vx div.Navbar_right__1MerY div.dd__trigger:nth-child(3) button.Navbar_btn__3ZCA_",
-    "account_menu": "#dd-modal div.NavbarProfileDropdown_wrapper__2mpA1",
-    "chart_loader": "#root div.ChartPage_wrapper__805jp div.Chart_loader__1bLXA",
-}
-
-xpaths_insights = {}
 
 selectors_insights = {
     "close_cookie_popup_button": "body > div.SAN-panel.SAN-panel_context.wrapper > div > button",
