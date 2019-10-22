@@ -4,7 +4,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
 from datastorage import selectors_insights as selectors
-from datastorage import xpaths_insights as xpaths
 import time
 import logging
 from datastorage import urls
