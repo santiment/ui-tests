@@ -9,7 +9,6 @@ import logging
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from datastorage import selectors_main as selectors
-from datastorage import xpaths_main as xpaths
 from datastorage import metrics, chart_settings_options, delta, title_conversion, urls
 from constants import BOT_LOGIN_SECRET_ENDPOINT, ENVIRONMENT, CONFIG_FILE
 from common_methods import ClickError, MaxAttemptsLimitException, safe_click
