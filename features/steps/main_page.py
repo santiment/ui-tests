@@ -131,6 +131,14 @@ class Mainpage:
         else:
             raise NoSuchElementException
 
+    def get_search_result_name(self, result):
+        selector = selectors["search_result_name"]
+        return result.find_element_by_css_selector(selector)
+
+    def get_search_result_ticker(self, result):
+        selector = selectors["search_result_ticker"]
+        return result.find_element_by_css_selector(selector)
+
     def get_search_noresults(self):
         selector = selectors["search_result_list_no_results"]
         return self.driver.find_element_by_css_selector(selector)
@@ -156,7 +164,26 @@ class Mainpage:
             selector = selectors["search_dialog"]
             close_button = self.get_search_dialog_close()
             safe_click(close_button)
-            self.basic_wait(selector, True)
+            self.basic_wait(selector, False)
+
+    def get_search_dialog_assets(self):
+        selector = selectors["search_dialog_asset"]
+        return self.driver.find_elements_by_css_selector(selector)
+
+    def get_search_dialog_asset(self, asset):
+        elements = list(filter(lambda x: x.text.lower() == asset.lower(), self.get_search_dialog_assets()))
+        if elements:
+            return elements[0]
+        else:
+            raise NoSuchElementException
+
+    def get_search_dialog_asset_name(self, result):
+        selector = selectors["search_dialog_asset_name"]
+        return result.find_element_by_css_selector(selector)
+
+    def get_search_dialog_asset_ticker(self, asset):
+        selector = selectors["search_dialog_asset_ticker"]
+        return asset.find_element_by_css_selector(selector)
 
     def search(self, text):
         self.open_search_dialog()

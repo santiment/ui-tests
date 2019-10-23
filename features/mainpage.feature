@@ -67,3 +67,7 @@ Examples:
 | Tezos |
 | Binance Coin |
 | TRON |
+
+Scenario: 6 - Search order is by market cap
+    Given I load Santiment main page and "do not" log in
+    Then I verify default search order is by market cap

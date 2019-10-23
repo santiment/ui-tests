@@ -25,7 +25,8 @@ def step_impl(context, is_logged_in_str):
     context.mainpage.navigate_to()
     context.mainpage.close_cookie_popup()
     context.mainpage.close_explore_popup()
-    context.mainpage.close_signals_popup()
+    if is_logged_in:
+        context.mainpage.close_signals_popup()
 
 
 @Given('I load Santiment Insights page and "{is_logged_in_str}" log in')
@@ -204,6 +205,17 @@ def step_impl(context, metrics):
     active_metrics = context.mainpage.get_active_metrics()
     active_metric_names = [element.text for element in active_metrics]
     assert sorted(metric_list) == sorted(active_metric_names)
+
+@Then('I verify default search order is by market cap')
+def step_impl(context):
+    context.mainpage.open_search_dialog()
+    assets = context.mainpage.get_search_dialog_assets()[:3]
+    names = [context.mainpage.get_search_dialog_asset_name(asset).text for asset in assets]
+    tickers = [context.mainpage.get_search_dialog_asset_ticker(asset).text for asset in assets]
+    context.mainpage.close_search_dialog()
+    print(names, tickers)
+    assert names == ["Bitcoin", "Ethereum", "Ripple"]
+    assert tickers == ["(BTC)", "(ETH)", "(XRP)"]
 
 #when then steps related to Insights page
 @Then('I verify Insights page is displayed')
