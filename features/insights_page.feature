@@ -1,12 +1,5 @@
-@stage
 Feature: UI tests for Insights page
-
-Scenario: preparation - clear drafts
-  Given I load Santiment Insights page and "do" log in
-  Then I verify Insights page is displayed
-  When I activate "My Drafts" tab
-  When I clear all drafts
-
+@prod @stage
 Scenario Outline: 1 - publish Insight menu is disabled if body or title is 5 or less characters
   Given I load Santiment Insights page and "do" log in
   Then I verify Insights page is displayed
@@ -24,7 +17,7 @@ Scenario Outline: 1 - publish Insight menu is disabled if body or title is 5 or 
   |        | aaaaaa | can't    |
   | aaaaa  | aaaaaa | can't    |
   | aaaaaa | aaaaaa | can      |
-
+@prod @stage
 Scenario Outline: 2 - save draft with different title and body lengths and verify draft and preview
   Given I load Santiment Insights page and "do" log in
   Then I verify Insights page is displayed
@@ -47,7 +40,7 @@ Scenario Outline: 2 - save draft with different title and body lengths and verif
   | empty         | empty         |          | doesn't have |
   | short         | empty         |          | has          |
   | long          | empty         |          | has          |
-
+@prod @stage
 Scenario Outline: 3 - can't add more than 5 tags
   Given I load Santiment Insights page and "do" log in
   Then I verify Insights page is displayed
@@ -58,7 +51,7 @@ Scenario Outline: 3 - can't add more than 5 tags
   | tags                    | can_cant |
   | eth, btc, zrx, trx, san | can't    |
   | eth, btc, zrx, trx      | can      |
-
+@stage
 Scenario: 4 - publish Insight and verify Insight and preview
   Given I load Santiment Insights page and "do" log in
   Then I verify Insights page is displayed
@@ -69,7 +62,7 @@ Scenario: 4 - publish Insight and verify Insight and preview
   Then I verify the latest Insight has latest saved title, tags and tag title
   When I read the latest Insight
   Then I verify read page has latest saved title, body and tags
-
+@stage
 Scenario Outline: 5 - filtering works properly
   Given I load Santiment Insights page and "do" log in
   Then I verify Insights page is displayed
@@ -87,3 +80,17 @@ Scenario Outline: 5 - filtering works properly
   | filter_option |
   | author        |
   | first tag     |
+@prod
+Scenario: 6 - filtering works properly - prod-specific
+  Given I load Santiment Insights page and "do" log in
+  Then I verify Insights page is displayed
+  When I activate "All Insights" tab
+  When I filter Insights by author of the latest Insight
+  Then I verify "All Insights" tab is active
+  Then I verify Insights are filtered by author
+@prod @stage
+Scenario: 7 - cleanup - clear drafts
+  Given I load Santiment Insights page and "do" log in
+  Then I verify Insights page is displayed
+  When I activate "My Drafts" tab
+  When I clear all drafts
