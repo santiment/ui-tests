@@ -10,8 +10,8 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from datastorage import selectors_main as selectors
 from datastorage import metrics, chart_settings_options, delta, title_conversion, urls
-from constants import BOT_LOGIN_SECRET_ENDPOINT, ENVIRONMENT, CONFIG_FILE
-from common_methods import ClickError, MaxAttemptsLimitException, safe_click
+from constants import BOT_LOGIN_SECRET_ENDPOINT, ENVIRONMENT, CONFIG_FILE, BOT_USER_ID
+from common_methods import ClickError, MaxAttemptsLimitException, safe_click, set_login_cookie
 
 class MissingCategoryException(Exception):
     pass
@@ -26,8 +26,7 @@ class Mainpage:
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 60, ignored_exceptions=[StaleElementReferenceException])
         if is_logged_in:
-            url = urls[ENVIRONMENT]['bot'] + BOT_LOGIN_SECRET_ENDPOINT
-            self.driver.get(url)
+            set_login_cookie(self.driver)
 
     def basic_wait(self, selector, flag, timeout=None):
         if timeout:
