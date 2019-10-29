@@ -7,8 +7,8 @@ from datastorage import selectors_insights as selectors
 import time
 import logging
 from datastorage import urls
-from constants import BOT_LOGIN_SECRET_ENDPOINT, ENVIRONMENT
-from common_methods import ClickError, MaxAttemptsLimitException, safe_click
+from constants import BOT_LOGIN_SECRET_ENDPOINT, ENVIRONMENT, BOT_USER_ID
+from common_methods import ClickError, MaxAttemptsLimitException, safe_click, set_login_cookie
 
 class TagError(Exception):
     pass
@@ -20,8 +20,7 @@ class InsightsPage:
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 60, ignored_exceptions=[StaleElementReferenceException])
         if is_logged_in:
-            url = urls[ENVIRONMENT]['bot'] + BOT_LOGIN_SECRET_ENDPOINT
-            self.driver.get(url)
+            set_login_cookie(self.driver)
 
     def navigate_to(self):
         attempts = 0
