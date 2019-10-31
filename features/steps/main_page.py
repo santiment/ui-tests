@@ -98,10 +98,10 @@ class Mainpage:
         self.close_popup(selectors["close_cookie_popup_button"], 5)
 
     def close_explore_popup(self):
-        self.close_popup(selectors["close_explore_popup_button"], 10)
+        self.close_popup(selectors["close_explore_popup_button"], 15)
 
     def close_signals_popup(self):
-        self.close_popup(selectors["close_signals_popup_button"], 10)
+        self.close_popup(selectors["close_signals_popup_button"], 15)
 
     def get_chart_page(self):
         selector = selectors["chart_page"]
