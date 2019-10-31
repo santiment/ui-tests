@@ -445,9 +445,10 @@ class Mainpage:
         datetime_to = datetime.strptime(date_to_text.strip(), '%d.%m.%y')
         return datetime_from, datetime_to
 
-    def get_interval_button(self):
-        selector = selectors["interval_button"]
-        return self.driver.find_element_by_css_selector(selector)
+    #commented out as element was removed , will delete later if change is permanent
+    #def get_interval_button(self):
+    #    selector = selectors["interval_button"]
+    #    return self.driver.find_element_by_css_selector(selector)
 
     def get_chart_dates(self):
         selector = selectors["chart_axis_date"]

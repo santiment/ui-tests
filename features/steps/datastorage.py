@@ -68,7 +68,7 @@ selectors_main = {
     "period": "#root > div > div.page.detailed > div:nth-child(1) > div > div.ChartPage_wrapper__805jp > div.ChartPage_tool__2vx_W > div > div.ChartPage_settings__1k0SP > div:nth-child(2) > div.Selector_wrapper__3KsWL.ChartPage_ranges__3h7wX > div",
     "period_active": "#root > div > div.page.detailed > div:nth-child(1) > div > div.ChartPage_wrapper__805jp > div.ChartPage_tool__2vx_W > div > div.ChartPage_settings__1k0SP > div:nth-child(2) > div.Selector_wrapper__3KsWL.ChartPage_ranges__3h7wX > div.Selector_selected__2rsUx",
     "calendar_button": "#root > div > div.page.detailed > div:nth-child(1) > div > div.ChartPage_wrapper__805jp > div.ChartPage_tool__2vx_W > div > div.ChartPage_settings__1k0SP > div:nth-child(2) > button.CalendarBtn_btn__2WS5X",
-    "interval_button": '#root > div > div.page.detailed > div:nth-child(1) > div > div.ChartPage_wrapper__805jp > div.ChartPage_tool__2vx_W > div > div.ChartPage_settings__1k0SP > div:nth-child(2) > div.IntervalSelector_wrapper__3_304',
+    #"interval_button": '#root > div > div.page.detailed > div:nth-child(1) > div > div.ChartPage_wrapper__805jp > div.ChartPage_tool__2vx_W > div > div.ChartPage_settings__1k0SP > div:nth-child(2) > div.IntervalSelector_wrapper__3_304',
     "chart_settings_button": "#root > div > div.page.detailed > div:nth-child(1) > div > div.ChartPage_wrapper__805jp > div.ChartPage_tool__2vx_W > div > div.ChartPage_settings__1k0SP > div:nth-child(2) > button.Button_flat__2o9Q6",
     "chart_settings_menu": "body > div.Modal_wrapper__3lQw2.ContextMenu_wrapper__3VXIO > div.Tooltip_tooltip__fE-Ct.ContextMenu_menu__35C1n > div",
     "chart_settings_menu_option": "body > div.Modal_wrapper__3lQw2.ContextMenu_wrapper__3VXIO > div.Tooltip_tooltip__fE-Ct.ContextMenu_menu__35C1n > div > button",
@@ -149,13 +149,13 @@ selectors_insights = {
 }
 
 delta = {
-    "1d": (relativedelta(days=1), timedelta(days=1)),
-    "1w": (relativedelta(weeks=1), timedelta(days=1)),
-    "1m": (relativedelta(months=1), timedelta(days=2)),
-    "3m": (relativedelta(months=3), timedelta(days=10)),
-    "6m": (relativedelta(months=6), timedelta(days=20)),
-    "1y": (relativedelta(years=1), timedelta(days=30)),
-    "all": (relativedelta(), timedelta()),
+    "1d": (relativedelta(days=1), timedelta(days=1), '10min'),
+    "1w": (relativedelta(weeks=1), timedelta(days=1), '10min'),
+    "1m": (relativedelta(months=1), timedelta(days=2), '2h'),
+    "3m": (relativedelta(months=3), timedelta(days=10), '12h'),
+    "6m": (relativedelta(months=6), timedelta(days=20), '12h'),
+    "1y": (relativedelta(years=1), timedelta(days=30), '2d'),
+    "all": (relativedelta(), timedelta(), '2d'),
 }
 
 title_conversion = {
