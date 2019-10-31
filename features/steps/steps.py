@@ -107,7 +107,8 @@ def step_impl(context):
     date_to_page_converted = datetime.strftime(date_to_page_corrected, '%Y-%m-%d')
     date_from_link = params['from'][0].split('T')[0]
     date_to_link = params['to'][0].split('T')[0]
-    interval_page = context.mainpage.get_interval_button().text
+    period = context.mainpage.get_active_period().text
+    interval_expected = delta[period][2]
     interval_link = params['interval'][0]
     netloc_expected = 'app-stage.santiment.net' if ENVIRONMENT == 'stage' else 'app.santiment.net'
     print(title_page, title_link)
@@ -115,7 +116,7 @@ def step_impl(context):
     assert netloc == netloc_expected
     assert sorted(metrics_link) == sorted(metrics_page)
     assert title_page == title_link
-    assert interval_page == interval_link
+    assert interval_expected == interval_link
     assert date_from_page_converted == date_from_link
     assert date_to_page_converted == date_to_link
 
@@ -132,6 +133,8 @@ def step_impl(context, period):
     start_date = end_date - delta[period][0]
     start_date_graph = datetime.strptime(context.mainpage.get_chart_dates()[0].text, date_pattern)
     end_date_graph = datetime.strptime(context.mainpage.get_chart_dates()[-1].text, date_pattern)
+    print(start_date.date(), start_date_graph.date())
+    print(end_date.date(), end_date_graph.date())
     assert abs(end_date - end_date_graph) < timedelta(days=2)
     if period != 'all':
         assert abs(start_date - start_date_graph) < delta[period][1]
@@ -144,9 +147,11 @@ def step_impl(context, period):
     end_date = datetime.today() + relativedelta(days=1)
     start_date = datetime.today() - delta[period][0]
     start_date_cal, end_date_cal = context.mainpage.get_from_to_dates()
+    print(start_date.date(), start_date_cal.date())
+    print(end_date.date(), end_date_cal.date())
     assert end_date.date() == end_date_cal.date()
     if period != 'all':
-        assert start_date.date() == start_date_cal.date()
+        assert abs(start_date - start_date_cal) < timedelta(days=2)
 
 @Then('I verify that token info is displayed correctly')
 def step_impl(context):
