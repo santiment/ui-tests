@@ -153,8 +153,8 @@ def step_impl(context, period):
     if period != 'all':
         assert abs(start_date - start_date_cal) < timedelta(days=2)
 
-@Then('I verify that token info is displayed correctly')
-def step_impl(context):
+@Then('I verify that {token} token info is displayed correctly')
+def step_impl(context, token):
     token_price_element = context.mainpage.get_token_price()
     token_volume_element = context.mainpage.get_token_volume()
     token_currency_element = context.mainpage.get_token_currency()
@@ -171,12 +171,17 @@ def step_impl(context):
 
 
     title = context.mainpage.get_token_title().text
+    name = ' '.join(title.split(' ')[:len(token.split(' '))])
     nickname = title.split(' ')[-1]
+    token_currency_text = token_currency_element.text
     for x in '() ':
         nickname = nickname.replace(x, '')
     first_name = title.split(' ')[0].lower()
+    print(token, name)
+    print(nickname, token_currency_text)
 
-    assert nickname == token_currency_element.text
+    assert name.lower() == token.lower()
+    assert nickname == token_currency_text
     assert first_name in context.mainpage.get_token_image().get_attribute("class")
     assert watch_button.text == "Watch {0}".format(nickname)
     assert add_signal_button.text == "Add signal"
