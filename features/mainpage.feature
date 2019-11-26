@@ -6,7 +6,7 @@ Scenario: 1 - page defaults are displayed correctly
     Then I verify that "6m" period is selected
     Then I verify that calendar dates are correct for "6m" period
     Then I verify that chart dates are correct for "6m" period
-    Then I verify that token info is displayed correctly
+    Then I verify that Bitcoin token info is displayed correctly
 
 Scenario Outline: 2 - period selection works correctly
     Given I load Santiment main page and "do not" log in
@@ -27,7 +27,7 @@ Examples:
 Scenario Outline: 3 - token search works properly
     Given I load Santiment main page and "do not" log in
     When I search for "<token>" in graph search bar and select the result
-    Then I verify that token info is displayed correctly
+    Then I verify that <token> token info is displayed correctly
 
 Examples:
 | token |
