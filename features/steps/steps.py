@@ -24,9 +24,6 @@ def step_impl(context, is_logged_in_str):
     context.mainpage = Mainpage(context.browser, is_logged_in)
     context.mainpage.navigate_to()
     context.mainpage.close_cookie_popup()
-    context.mainpage.close_explore_popup()
-    if is_logged_in:
-        context.mainpage.close_signals_popup()
 
 
 @Given('I load Santiment Insights page and "{is_logged_in_str}" log in')

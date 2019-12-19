@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
-from datastorage import selectors_insights as selectors
+from selectors_insights import *
 import time
 import logging
 from datastorage import urls
@@ -24,7 +24,7 @@ class InsightsPage:
 
     def navigate_to(self):
         attempts = 0
-        selector = selectors["featured_insights_title"]
+        selector = FEATURED_INSIGHTS_TITLE
         while attempts < 5:
             try:
                 self.driver.get(self.default_url)
@@ -63,7 +63,7 @@ class InsightsPage:
         raise StaleElementReferenceException(f"Exceeded max attempts limit trying to get element {selector}")
 
     def close_cookie_popup(self):
-        selector = selectors["close_cookie_popup_button"]
+        selector = CLOSE_COOKIE_POPUP_BUTTON
         try:
             WebDriverWait(self.driver, 5).until(
                 lambda wd: self.driver.find_element_by_css_selector(selector).is_displayed()
@@ -78,25 +78,25 @@ class InsightsPage:
 
 
     def get_write_insight_button(self):
-        selector = selectors['write_button']
+        selector = WRITE_BUTTON
         return self.driver.find_element_by_css_selector(selector)
 
     def get_tab(self, tab):
-        selector = selectors['tab']
+        selector = TAB
         element = next(filter(lambda x: x.text == tab, self.driver.find_elements_by_css_selector(selector)))
         return element
 
     def get_active_tab(self):
-        selector = selectors['active_tab']
+        selector = ACTIVE_TAB
         return self.driver.find_element_by_css_selector(selector)
 
     def get_loader(self):
-        selector = selectors['loader']
+        selector = LOADER
         return self.driver.find_element_by_css_selector(selector)
 
     def wait_until_tab_is_active(self, tab):
         self.wait.until_not(
-            lambda wd: wd.find_element_by_css_selector(selectors['loader']).is_displayed()
+            lambda wd: wd.find_element_by_css_selector(LOADER).is_displayed()
         )
         self.wait.until(
             lambda wd: self.get_active_tab().text == tab
@@ -108,42 +108,42 @@ class InsightsPage:
         self.wait_until_tab_is_active(tab)
 
     def get_drafts(self):
-        selector = selectors['draft']
+        selector = DRAFT
         return self.driver.find_elements_by_css_selector(selector)
 
     def get_delete_draft_button(self, draft):
-        selector = selectors['draft_delete_button']
+        selector = DRAFT_DELETE_BUTTON
         return draft.find_element_by_css_selector(selector)
 
     def get_edit_draft_button(self, draft):
-        selector = selectors['draft_edit_button']
+        selector = DRAFT_EDIT_BUTTON
         return draft.find_element_by_css_selector(selector)
 
     def get_draft(self, i):
         return self.get_drafts()[i]
 
     def get_draft_title(self, draft):
-        selector = selectors['draft_title']
+        selector = DRAFT_TITLE
         return draft.find_element_by_css_selector(selector)
 
     def get_draft_body(self, draft):
-        selector = selectors['draft_body']
+        selector = DRAFT_BODY
         return draft.find_element_by_css_selector(selector)
 
     def get_draft_timestamp(self, draft):
-        selector = selectors['draft_timestamp']
+        selector = DRAFT_TIMESTAMP
         return draft.find_element_by_css_selector(selector)
 
     def get_delete_draft_dialog(self, draft):
-        selector = selectors['draft_delete_dialog']
-        return draft.find_element_by_css_selector(selector)
+        selector = DRAFT_DELETE_DIALOG
+        return self.driver.find_element_by_css_selector(selector)
 
     def get_delete_draft_cancel_button(self,dialog):
-        selector = selectors['draft_delete_cancel']
+        selector = DRAFT_DELETE_CANCEL
         return dialog.find_element_by_css_selector(selector)
 
     def get_delete_draft_confirm_button(self, dialog):
-        selector = selectors['draft_delete_confirm']
+        selector = DRAFT_DELETE_CONFIRM
         return dialog.find_element_by_css_selector(selector)
 
     def delete_draft(self, draft, do_delete):
@@ -156,7 +156,7 @@ class InsightsPage:
         button = self.get_delete_draft_confirm_button(dialog) if do_delete else self.get_delete_draft_cancel_button(dialog)
         safe_click(button)
         self.wait.until_not(
-            lambda wd: wd.find_element_by_css_selector(selectors['draft_delete_dialog']).is_displayed()
+            lambda wd: wd.find_element_by_css_selector(DRAFT_DELETE_DIALOG).is_displayed()
         )
         if do_delete:
             self.wait.until(
@@ -178,23 +178,23 @@ class InsightsPage:
         )
 
     def get_editor_title(self):
-        selector = selectors['editor_title']
+        selector = EDITOR_TITLE
         return self.driver.find_element_by_css_selector(selector)
 
     def get_editor_body(self):
-        selector = selectors['editor_body']
+        selector = EDITOR_BODY
         return self.driver.find_element_by_css_selector(selector)
 
     def get_publish_menu_button(self):
-        selector = selectors['editor_publish_menu_button']
+        selector = EDITOR_PUBLISH_MENU_BUTTON
         return self.driver.find_element_by_css_selector(selector)
 
     def get_tag_input(self):
-        selector = selectors['editor_tag_input']
+        selector = EDITOR_TAG_INPUT
         return self.driver.find_element_by_css_selector(selector)
 
     def get_tag_list_items(self):
-        selector = selectors['editor_tag_list_item']
+        selector = EDITOR_TAG_LIST_ITEM
         return self.driver.find_elements_by_css_selector(selector)
 
     def get_tag_list_item(self, item):
@@ -202,7 +202,7 @@ class InsightsPage:
         return element
 
     def get_selected_tags(self):
-        selector = selectors['editor_selected_tag']
+        selector = EDITOR_SELECTED_TAG
         return self.driver.find_elements_by_css_selector(selector)
 
     def add_insight_tag(self, tag):
@@ -216,11 +216,11 @@ class InsightsPage:
         )
 
     def get_publish_insight_button(self):
-        selector = selectors['editor_publish_insight_button']
+        selector = EDITOR_PUBLISH_INSIGHT_BUTTON
         return self.driver.find_element_by_css_selector(selector)
 
     def get_publish_insight_loader(self):
-        selector = selectors['editor_publish_insight_loader']
+        selector = EDITOR_PUBLISH_INSIGHT_LOADER
         return self.driver.find_element_by_css_selector(selector)
 
     def open_publish_menu(self):
@@ -229,15 +229,15 @@ class InsightsPage:
         except NoSuchElementException:
             safe_click(self.get_publish_menu_button())
             self.wait.until_not(
-                lambda wd: wd.find_element_by_css_selector(selectors['editor_publish_insight_loader']).is_displayed()
+                lambda wd: wd.find_element_by_css_selector(EDITOR_PUBLISH_INSIGHT_LOADER).is_displayed()
             )
 
     def get_draft_saved_timestamp(self):
-        selector = selectors['editor_saved_timestamp']
+        selector = EDITOR_SAVED_TIMESTAMP
         return self.driver.find_element_by_css_selector(selector)
 
     def get_clear_tags_button(self):
-        selector = selectors['editor_clear_tags']
+        selector = EDITOR_CLEAR_TAGS
         return self.driver.find_element_by_css_selector(selector)
 
     def clear_tags(self):
@@ -246,15 +246,15 @@ class InsightsPage:
             lambda wd: len(self.get_selected_tags()) == 0
         )
         self.wait.until_not(
-            lambda wd: wd.find_element_by_css_selector(selectors['editor_publish_insight_loader']).is_displayed()
+            lambda wd: wd.find_element_by_css_selector(EDITOR_PUBLISH_INSIGHT_LOADER).is_displayed()
         )
 
     def get_tag_list(self):
-        selector = selectors['editor_tag_list']
+        selector = EDITOR_TAG_LIST
         return self.driver.find_element_by_css_selector(selector)
 
     def get_tag_list_toggle(self):
-        selector = selectors['editor_tag_list_toggle']
+        selector = EDITOR_TAG_LIST_TOGGLE
         return self.driver.find_element_by_css_selector(selector)
 
     def try_toggle_tag_list(self, state):
@@ -309,7 +309,7 @@ class InsightsPage:
         for tag in tags:
             self.add_insight_tag(tag)
         self.wait.until_not(
-            lambda wd: wd.find_element_by_css_selector(selectors['editor_publish_insight_loader']).is_displayed()
+            lambda wd: wd.find_element_by_css_selector(EDITOR_PUBLISH_INSIGHT_LOADER).is_displayed()
         )
 
     def publish_insight(self):
@@ -327,9 +327,6 @@ class InsightsPage:
         if tags and tags[0]:
             self.write_insight_tags(tags)
         if title or body:
-            self.wait.until_not(
-                lambda wd: self.get_draft_saved_timestamp().text == 'Saving...'
-            )
             self.wait.until(
                 lambda wd: self.get_draft_saved_timestamp().text == 'Draft saved a few seconds ago'
             )
@@ -343,43 +340,43 @@ class InsightsPage:
             self.navigate_to()
 
     def get_read_title(self):
-        selector = selectors['read_title']
+        selector = READ_TITLE
         return self.driver.find_element_by_css_selector(selector)
 
     def get_read_body(self):
-        selector = selectors['read_body']
+        selector = READ_BODY
         return self.driver.find_element_by_css_selector(selector)
 
     def get_read_tags(self):
-        selector = selectors['read_tag']
+        selector = READ_TAG
         return self.driver.find_elements_by_css_selector(selector)
 
     def get_read_author(self):
-        selector = selectors['read_author']
+        selector = READ_AUTHOR
         return self.driver.find_element_by_css_selector(selector)
 
     def get_read_follow_button(self):
-        selector = selectors['read_follow_button']
+        selector = READ_FOLLOW_BUTTON
         return self.driver.find_element_by_css_selector(selector)
 
     def get_read_timestamp(self):
-        selector = selectors['read_timestamp']
+        selector = READ_TIMESTAMP
         return self.driver.find_element_by_css_selector(selector)
 
     def get_read_like_button(self):
-        selector = selectors['read_like_button']
+        selector = READ_LIKE_BUTTON
         return self.driver.find_element_by_css_selector(selector)
 
     def get_read_share_button(self):
-        selector = selectors['read_share_button']
+        selector = READ_SHARE_BUTTON
         return self.driver.find_element_by_css_selector(selector)
 
     def get_share_dialog(self):
-        selector = selectors['share_dialog']
+        selector = SHARE_DIALOG
         return self.driver.find_element_by_css_selector(selector)
 
     def get_share_dialog_close_button(self):
-        selector = selectors['share_dialog_close_button']
+        selector = SHARE_DIALOG_CLOSE_BUTTON
         return self.driver.find_element_by_css_selector(selector)
 
     def preview_draft(self, draft):
@@ -390,18 +387,18 @@ class InsightsPage:
         )
 
     def get_insights(self):
-        selector = selectors['insight']
+        selector = INSIGHT
         return self.driver.find_elements_by_css_selector(selector)
 
     def get_insight(self, i):
         return self.get_insights()[i]
 
     def get_insight_title(self, insight):
-        selector = selectors['insight_title']
+        selector = INSIGHT_TITLE
         return insight.find_element_by_css_selector(selector)
 
     def get_insight_tag_title(self, insight):
-        selector = selectors['insight_tag_title']
+        selector = INSIGHT_TAG_TITLE
         return insight.find_element_by_css_selector(selector)
 
     def has_tag_title(self, insight):
@@ -412,18 +409,18 @@ class InsightsPage:
         return True
 
     def get_insight_author(self, insight):
-        selector = selectors['insight_author']
+        selector = INSIGHT_AUTHOR
         return insight.find_element_by_css_selector(selector)
 
     def get_insight_tags(self, insight):
-        selector = selectors['insight_tag']
+        selector = INSIGHT_TAG
         return insight.find_elements_by_css_selector(selector)
 
     def get_insight_tag(self, insight, i):
         return self.get_insight_tags(insight)[i]
 
     def get_insight_timestamp(self, insight):
-        selector = selectors['insight_timestamp']
+        selector = INSIGHT_TIMESTAMP
         return insight.find_element_by_css_selector(selector)
 
     def read_insight(self, insight):
