@@ -2,7 +2,7 @@ behave==1.2.6
 python-dateutil==2.8.0
 selenium==3.141.0
 selenium-wire==1.0.9
-urllib3==1.24.1
+urllib3==1.24.2
 psutil==3.2.0
 browserstack-local==1.2.1
 junit2html==22
