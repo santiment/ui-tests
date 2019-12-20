@@ -21,18 +21,16 @@ if DISCORD_WEBHOOK:
     files = [File(open(path, 'rb'), os.path.basename(path).replace('.', f'_{ENVIRONMENT}_{CONFIG_FILE}_{str_start_replaced}.')) for path in glob.glob(path_to_report)]
 
     if ENVIRONMENT == 'stage' and DISCORD_USER_ID:
-        mention = f"<@{DISCORD_USER_ID}>"
+        mention = f"""<@{DISCORD_USER_ID}>
+        """
     else:
         mention = ""
 
     message = f"""
-    ++++++++++++++++++++++++++++++++++++++++++++++
-    {mention}
-    Test run results:
+    {mention}Test run results:
     Started at {str_start}, finished at {str_finish}
     Total duration: {str_diff}
     Environment: {ENVIRONMENT}
     Config: {CONFIG_FILE}
-    ===============================================
     """
     webhook.send(message, username='TestResultsBot', files=files)
