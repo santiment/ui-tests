@@ -1,31 +1,35 @@
-# python-selenium
-This project contains some e2e automated tests for Santiment's stage server (https://app-stage.santiment.net)
+# ui-tests
+This project contains automated tests for Sanbase UI
 
-Tests are based on Page Object Model (POM), and cover the following functionality:
+## Installation
+There're 2 ways to run tests: on your machine - with your browser or with Browserstack, or from a Docker container (only using Browserstack)
+If you want to run tests on your machine, first do:
+```
+pip install -r requirements.txt
+```
 
--searching a token
+## Configuration
+constants.py contain the list of environmental variables, available to configure the test run:
+```
+CONFIG_FILE - path to json file containing browser configuration
+WHERE_TO_RUN - locally or using Browserstack
+TASK_ID, BROWSERSTACK_USERNAME, BROWSERSTACK_SERVER, BROWSERSTACK_ACCESS_KEY, BROWSERSTACK_APP_ID - Browserstack configurations, more on that here: https://www.browserstack.com/automate/behave
+ENVIRONMENT - 'stage' or 'prod'
+BOT_LOGIN_SECRET_ENDPOINT - url for Sanbase enpdoint which sets up bot login cookie
+BOT_USER_ID - # of bot user (multiple bots are used for parallel testing)
+DISCORD_WEBHOOK, DISCORD_USER_ID - Discord configurations for posting test results
+```
 
--choosing a time period
+## Running the tests
 
--selecting/deselecting metrics
+Tests are based on Behave framework (https://behave.readthedocs.io/en/latest/)
 
--opening/closing the "Share" dialog window
-
-
-It uses Behave testing framework, tests can be run locally or using Browserstack (https://www.browserstack.com/automate/behave)
-
-Here's a brief summary of the codebase:
-
-datastorage.py - contains constant values which are needed for the tests
-
-main_page.py - contains the POM for the stage server main page
-
-steps.py - contains test steps (more on that here https://behave.readthedocs.io/en/latest/tutorial.html#python-step-implementations)
-
-basic.feature - feature file that contains some basic e2e tests
-
-environment.py - contains setup for Behave and Browserstack integration
-
-To run the tests, in the /features directory run:
-
-behave
+To run tests, first go to `features` directory:
+```
+cd features
+```
+Here's an example of how to run the tests:
+```
+behave mainpage.feature --tags=stage
+```
+This command will run all test scenarios contained in `mainpage.feature` which are marked by `stage` tag. More info on tags and run options you can find under the link above.
